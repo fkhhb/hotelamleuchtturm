@@ -56,12 +56,12 @@ HOTEL_LD = {
 
 def ld(obj): return '<script type="application/ld+json">' + json.dumps(obj, ensure_ascii=False) + "</script>"
 
-def page(path, title, desc, body, active="", schema=None, mbar=True):
+def page(path, title, desc, body, active="", schema=None, mbar=True, mbar_href=None):
     depth = path.count("/")
     R = "../" * depth
     nav = "".join(f'<li><a href="{R}{h}"{" aria-current=page" if h==active else ""}>{t}</a></li>' for h,t in MENU)
     sch = ld(schema) if schema else ""
-    mb = f'<div class="mbar"><span id="mbar-txt"><b>Ab 139 € pro Nacht</b>Bestpreis bei Direktbuchung</span><a class="btn btn-navy" href="{R}buchen.html">Buchen</a></div>' if mbar else ""
+    mb = f'<div class="mbar"><span id="mbar-txt"><b>Ab 139 € pro Nacht</b>Bestpreis bei Direktbuchung</span><a class="btn btn-navy" href="{mbar_href or R + 'buchen.html'}">{'Weiter' if mbar_href else 'Buchen'}</a></div>' if mbar else ""
     doc = f"""<!doctype html>
 <html lang="de">
 <head>
@@ -72,7 +72,7 @@ def page(path, title, desc, body, active="", schema=None, mbar=True):
 <meta name="robots" content="noindex, nofollow">
 <link rel="icon" href="{R}img/favicon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Marcellus&family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="{R}assets/site.css">
 {sch}
 </head>
@@ -96,7 +96,7 @@ def page(path, title, desc, body, active="", schema=None, mbar=True):
     <div><h4>Service</h4><p><a href="{R}lage-anfahrt.html">Lage &amp; Anfahrt</a><br><a href="{R}index.html#fragen">Häufige Fragen</a><br><a href="{R}geschichte.html">Geschichte</a><br><a href="{R}buchen.html">Online buchen</a></p></div>
     <div><h4>Rechtliches</h4><p><a href="{REAL}/DE/ueber-uns/impressum1.html">Impressum des Hotels</a><br><a href="{REAL}/DE/ueber-uns/datenschutz.html">Datenschutz</a><br><a href="{REAL}/DE/ueber-uns/agbs.html">AGB</a></p></div>
   </div>
-  <div class="fnote">Konzeptentwurf zur Neugestaltung von hotel-am-leuchtturm.de · Inhalte, Zimmerdaten und Preise 2026 von der aktuellen Website des Hotels; Verfügbarkeiten, Frühstückspreis, Kurtaxe und als „Vorschlag“ markierte Leistungen sind Beispiele. Fotos © Hotel am Leuchtturm. · <a href="{R}vorschlag/index.html">Technik-Paket (Sitemap, robots.txt, llms.txt, Weiterleitungen)</a> · <a href="{R}impressum.html">Impressum dieses Entwurfs</a></div>
+  <div class="fnote">Konzeptentwurf zur Neugestaltung von hotel-am-leuchtturm.de · Inhalte, Zimmerdaten und Preise 2026 von der aktuellen Website des Hotels; Verfügbarkeiten, Frühstückspreis, Kurtaxe und als „Vorschlag“ markierte Leistungen sind Beispiele. Fotos © Hotel am Leuchtturm; Titelbild: A.Savin, Wikipedia (Free Art License). · <a href="{R}vorschlag/index.html">Technik-Paket (Sitemap, robots.txt, llms.txt, Weiterleitungen)</a> · <a href="{R}impressum.html">Impressum dieses Entwurfs</a></div>
 </div></footer>
 {mb}
 <div class="lightbox" id="lightbox" role="dialog" aria-label="Foto"><img alt=""></div>
@@ -151,9 +151,10 @@ def home():
     faq = "".join(f"<details><summary>{e(q)}</summary><p>{e(a)}</p></details>" for q,a in FAQ)
     body = f"""
 <section class="hero" style="padding:0">
-  <picture><source media="(max-width:640px)" srcset="img/aussen-37.jpg"><img class="hero-img" src="img/stage-6.jpg" alt="Das Hotel am Leuchtturm an der Strandpromenade von Warnemünde mit Blick auf die Ostsee"></picture>
+  <picture><source media="(max-width:640px)" srcset="img/hero-vom-leuchtturm-960.jpg"><img class="hero-img" src="img/hero-vom-leuchtturm.jpg" alt="Das Hotel am Leuchtturm von oben, fotografiert vom Leuchtturm Warnemünde aus" fetchpriority="high"></picture>
+  <span class="hero-credit">Blick vom Leuchtturm auf das Hotel · Foto: <a href="https://commons.wikimedia.org/wiki/File:Rostock_asv2018-05_img64_Warnemuende_view_from_lighthouse.jpg">A.Savin, Wikipedia</a> · <a href="https://artlibre.org/licence/lal/de/">Free Art License</a></span>
   <div class="hero-copy"><div class="wrap">
-    <div class="eyebrow">Seit 1850 an der Promenade von Warnemünde</div>
+    <div class="eyebrow">Der Blick vom Leuchtturm auf unser Haus · seit 1850</div>
     <h1 class="caps">Direkt am Leuchtturm</h1>
     <p>Inhabergeführtes Boutique-Hotel mit 30 Zimmern, Frühstückslounge mit Blick auf die Promenade und Lobby mit Kamin – nur wenige Schritte vom feinen weißen Sand der Ostsee.</p>
   </div></div>
@@ -347,7 +348,7 @@ def apartments():
   <div class="split" style="align-items:start">
     <div>
       <p class="lead">Auf zwei Etagen erwarten Sie jeweils ein 1-Zimmer- und ein 2-Zimmer-Nichtraucher-Apartment – komfortabel eingerichtet für einen längeren Aufenthalt, mit großer Panoramaverglasung und Blick auf Ostsee, Strand und Promenade mit Leuchtturm.</p>
-      <div class="table-wrap"><table style="min-width:520px">
+      <div class="table-wrap"><table>
         <thead><tr><th>Apartment</th><th class="num">Nebensaison</th><th class="num">Zwischensaison</th><th class="num">Hauptsaison</th></tr></thead>
         <tbody><tr><td><b>1-Zimmer-Apartment</b><br><small>40 m², Ostseeblick</small></td><td class="num">125 €</td><td class="num">ab 155 €</td><td class="num">ab 175 €</td></tr>
         <tr><td><b>2-Zimmer-Apartment</b><br><small>60 m², Ostseeblick</small></td><td class="num">ab 155 €</td><td class="num">ab 185 €</td><td class="num">ab 215 €</td></tr>
@@ -383,7 +384,7 @@ def offers():
     <p class="lead">Lernen Sie den besonderen Reiz der Ostsee im Winter kennen – der Kontrast zwischen rauer, tosender Ostsee und ruhiger, behaglicher Wohlfühlatmosphäre in unserem Haus.</p>
     <h3>Im Arrangement enthalten</h3>
     <ul class="ticks"><li>Zur Begrüßung ein Heißgetränk an unserem Kamin</li><li>Übernachtung im Komfort- oder Terrassen-Doppelzimmer</li><li>Reichhaltiges Frühstück</li><li>Die ortsübliche Kurtaxe</li><li>Freies Parken in der Tiefgarage Kurhaus</li></ul>
-    <p style="margin-top:22px;font-size:18px">Preis pro Person und Nacht im Doppelzimmer <b style="font-family:var(--serif);font-size:34px;color:var(--navy)">ab 105 €</b></p>
+    <p style="margin-top:22px;font-size:18px">Preis pro Person und Nacht im Doppelzimmer <b class="fig" style="font-size:32px;color:var(--navy)">ab 105 €</b></p>
     <p><a class="btn btn-navy" href="../buchen.html?offer=wintertage&amp;room=komfort-doppelzimmer&amp;arrival=2026-11-20&amp;departure=2026-11-22&amp;adults=2&amp;step=2">Arrangement buchen</a></p>
     <p class="slots-h">Buchbar bei Verfügbarkeit. Heute steht hier „auf Anfrage“ – im Entwurf führt der Button direkt in die Buchung mit passenden Daten.</p>
     <div class="note" data-n="3"><b>Angebote mit festem Link:</b> Heute führt „jetzt Buchen“ nur in die allgemeine Buchungsmaske. Hier öffnet der Button die Buchung mit Zimmer, Daten und Arrangement – ideal für Newsletter, Anzeigen und KI-Assistenten.</div>
@@ -487,10 +488,9 @@ def booking():
   </form>
   <nav class="stepper" id="stepper" aria-label="Buchungsschritte"><a href="#">1 · Zimmer</a><a href="#">2 · Rate</a><a href="#">3 · Extras</a><a href="#">4 · Übersicht</a></nav>
   <div class="bk"><div id="step"></div><aside class="summary" id="summary"></aside></div>
-  <div class="share"><span>Teilbarer Link zu genau diesem Stand:</span><code class="js-url"></code><button type="button" data-copy>Link kopieren</button></div>
 </div></section>
 """
-    page("buchen.html", "Online buchen – Hotel am Leuchtturm Warnemünde", "Zimmer im Hotel am Leuchtturm direkt beim Hotel buchen – mit Gesamtpreis, Extras und teilbarem Buchungslink.", body, mbar=True)
+    page("buchen.html", "Online buchen – Hotel am Leuchtturm Warnemünde", "Zimmer im Hotel am Leuchtturm direkt beim Hotel buchen – mit Gesamtpreis, Extras und teilbarem Buchungslink.", body, mbar=True, mbar_href="#step")
 
 # ---------------- Impressum des Entwurfs ----------------
 def imprint():

@@ -241,8 +241,7 @@ function initBooking(){
           <ul class="ticks" style="margin-top:8px"><li>ein kurzes Formular: Name, E-Mail, Telefon</li><li>Zahlung über das Buchungssystem (DIRS21)</li><li>sofortige Bestätigung per E-Mail mit Link „Meine Buchung verwalten“</li></ul>
           <p style="margin:12px 0 0"><b>In diesem Entwurf endet der Ablauf hier.</b> Die echte Verfügbarkeit für Ihre Daten können Sie schon heute direkt im Buchungssystem des Hotels prüfen – per Link, ohne Umweg:</p>
           <p style="margin:12px 0 0"><a class="btn btn-line" href="${dirs21Url(st)}" target="_blank" rel="noopener">Echte Verfügbarkeit bei DIRS21 prüfen ↗</a></p></div>
-        <div class="share"><span>Diese Auswahl teilen:</span><code class="js-url"></code><button type="button" data-copy>Link kopieren</button></div>
-        <div class="note" data-n="4"><b>Teilbarer Buchungslink:</b> Genau diese Adresse kann die Rezeption per E-Mail oder WhatsApp schicken, ein KI-Assistent einem Gast übergeben oder eine Anzeige als Ziel verwenden.</div>
+        <div class="note" data-n="4"><b>Teilbarer Buchungslink:</b> Die Adresse in der Browserzeile enthält jetzt Zimmer, Daten, Rate und Extras. Genau diese Adresse kann die Rezeption per E-Mail oder WhatsApp schicken, ein KI-Assistent einem Gast übergeben oder eine Anzeige als Ziel verwenden.</div>
         <div class="navbtns"><button class="btn btn-line" type="button" data-step="3">Zurück</button><button class="btn btn-navy" type="button" disabled>Weiter zur Zahlung</button></div>`;
     }
     $$("[data-step]", body).forEach(bt => bt.onclick = () => go(+bt.dataset.step));
@@ -272,6 +271,7 @@ function initBooking(){
   });
   $("#k-arr").addEventListener("change", () => { const a=$("#k-arr").value, b=$("#k-dep"); if (!b.value || b.value<=a) b.value = iso(add(D(a), Math.max(2,minStay(a)))); });
   document.addEventListener("click", async e => { if (e.target.closest("[data-copy]")) { try { await navigator.clipboard.writeText(location.href); toast("Link kopiert – öffnen Sie ihn in einem anderen Fenster."); } catch(_) { toast("Bitte die Adresse markieren und kopieren."); } } });
+  const mlink = $(".mbar a"); if (mlink) mlink.addEventListener("click", e => { e.preventDefault(); $("#step").scrollIntoView({behavior:"smooth"}); });
   if (st.offer === "wintertage") toast("Arrangement „Wintertage in Warnemünde“: Preis laut Angebot ab 105 € p. P./Nacht inkl. Frühstück, Kurtaxe und Parken.");
   render(); write();
 }
