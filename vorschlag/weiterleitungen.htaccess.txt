@@ -1,0 +1,33 @@
+# 301-Weiterleitungen alt -> neu (Apache .htaccess, mod_alias)
+# Die Website läuft auf Apache – diese Zeilen kommen in die .htaccess im Hauptverzeichnis.
+Redirect 301 /DE/home.html /
+Redirect 301 /DE/hotel-zimmer.html /zimmer/
+Redirect 301 /DE/hotel-zimmer/preise-konditionen.html /zimmer/
+Redirect 301 /DE/hotel-zimmer/panorama-terrassen-dz.html /zimmer/panorama-terrassen-doppelzimmer/
+Redirect 301 /DE/hotel-zimmer/panorama-dz.html /zimmer/panorama-doppelzimmer/
+Redirect 301 /DE/hotel-zimmer/terrassen-dz.html /zimmer/terrassen-doppelzimmer/
+Redirect 301 /DE/hotel-zimmer/dz-mit-ostseeblick.html /zimmer/komfort-doppelzimmer/
+Redirect 301 /DE/hotel-zimmer/doppelzimmer2.html /zimmer/doppelzimmer/
+Redirect 301 /DE/hotel-zimmer/einzelzimmer.html /zimmer/einzelzimmer/
+Redirect 301 /DE/apartmenthaus-am-leuchtturm1.html /apartments/
+Redirect 301 /DE/apartmenthaus-am-leuchtturm1/apartmenthaus-am-leuchtturm.html /apartments/
+Redirect 301 /DE/arrangements.html /angebote/
+Redirect 301 /DE/arrangements,arrangement-8-wintertage-in-warnemuende.html /angebote/wintertage-in-warnemuende/
+Redirect 301 /DE/hotel-zimmer/fotogalerie.html /galerie/
+Redirect 301 /DE/hotel-zimmer/gutscheine.html /gutscheine/
+Redirect 301 /DE/hotel-zimmer/geschichte.html /geschichte/
+Redirect 301 /DE/ueber-uns/lage--anfahrt.html /lage-anfahrt/
+Redirect 301 /DE/lageanfahrt.html /lage-anfahrt/
+Redirect 301 /DE/ueber-uns.html /kontakt/
+Redirect 301 /DE/ueber-uns/kontakt1.html /kontakt/
+Redirect 301 /DE/kontakt.html /kontakt/
+Redirect 301 /DE/ueber-uns/partnerseiten1.html /partner/
+Redirect 301 /DE/partnerseiten.html /partner/
+Redirect 301 /DE/ueber-uns/impressum1.html /impressum/
+Redirect 301 /DE/impressum.html /impressum/
+Redirect 301 /DE/ueber-uns/datenschutz.html /datenschutz/
+Redirect 301 /DE/datenschutz1.html /datenschutz/
+Redirect 301 /DE/ueber-uns/agbs.html /agb/
+
+# Englische Seiten nach demselben Muster: /EN/... -> /en/...
+RedirectMatch 301 ^/EN/home\.html$ /en/

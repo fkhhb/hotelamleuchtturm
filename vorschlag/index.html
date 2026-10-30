@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Technik-Paket – Konzeptentwurf Hotel am Leuchtturm</title>
+<meta name="description" content="Sitemap, robots.txt, llms.txt, strukturierte Daten und 301-Weiterleitungen für hotel-am-leuchtturm.de.">
+<meta name="robots" content="noindex, nofollow">
+<link rel="icon" href="../img/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/site.css">
+
+</head>
+<body class="notes" data-root="../">
+<div class="concept" role="note"><span><b>Konzeptentwurf</b> für eine neue Website des Hotel am Leuchtturm – keine offizielle Seite. Verfügbarkeiten und markierte Werte sind Demo. Echte Buchung: <a href="https://www.hotel-am-leuchtturm.de/DE/home.html">hotel-am-leuchtturm.de</a></span><button type="button" id="toggleNotes">Hinweise ausblenden</button></div>
+<header class="top"><div class="wrap bar">
+  <a class="brand" href="../index.html" aria-label="Hotel am Leuchtturm – Startseite"><img src="../img/logo-header.jpg" alt="Hotel am Leuchtturm – seit 1850 in Warnemünde" width="248" height="100"></a>
+  <ul class="menu" id="menu"><li><a href="../zimmer/index.html">Zimmer</a></li><li><a href="../apartments.html">Apartments</a></li><li><a href="../angebote/index.html">Angebote</a></li><li><a href="../lage-anfahrt.html">Lage</a></li><li><a href="../geschichte.html">Geschichte</a></li></ul>
+  <a class="lang" href="#" data-toast="Die englische Version folgt demselben Aufbau unter /en/ – inklusive englischer Buchungsstrecke."><b>DE</b> | EN</a>
+  <a class="btn btn-navy" href="../buchen.html">Jetzt buchen</a>
+  <button class="burger" type="button" aria-label="Menü" aria-controls="menu" aria-expanded="false"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M3 12h18M3 18h18"/></svg></button>
+</div></header>
+<main>
+
+<div class="wrap crumbs"><a href="../index.html">Startseite</a> › Technik-Paket</div>
+<section style="padding-top:22px"><div class="wrap">
+  <div class="eyebrow">Für Ihre Webagentur</div><h1 class="caps" style="font-size:clamp(30px,4vw,46px)">Technik-Paket</h1><div class="rule"></div>
+  <p class="lead">Diese Dateien sind für die echte Domain hotel-am-leuchtturm.de geschrieben. Sie enthalten nur echte Angaben von der heutigen Website – keine Demo-Werte.</p>
+  <div class="tiles">
+    <article class="tile"><div class="bd"><div class="when">Neu · fehlt heute (404)</div><h3>sitemap.xml</h3><p>Alle neuen Adressen mit deutscher und englischer Version (hreflang).</p><a class="btn btn-line" href="sitemap.xml">Ansehen</a></div></article>
+    <article class="tile"><div class="bd"><div class="when">Neu · fehlt heute (404)</div><h3>robots.txt</h3><p>Lässt Suchmaschinen und KI-Assistenten alles lesen, verweist auf die Sitemap. Optionaler Ausschluss von KI-Training ist vorbereitet.</p><a class="btn btn-line" href="robots.txt">Ansehen</a></div></article>
+    <article class="tile"><div class="bd"><div class="when">Neu · fehlt heute (404)</div><h3>llms.txt</h3><p>Kurzporträt für KI-Assistenten: Zimmer, Preise 2026, Konditionen, Anfahrt und Buchungslink-Format.</p><a class="btn btn-line" href="llms.txt">Ansehen</a></div></article>
+    <article class="tile"><div class="bd"><div class="when">Strukturierte Daten</div><h3>schema-hotel.json</h3><p>schema.org „Hotel“ mit Adresse, Zeiten, Ausstattung, Zimmern und ab-Preisen – als JSON-LD in die Startseite einbauen.</p><a class="btn btn-line" href="schema-hotel.json">Ansehen</a></div></article>
+    <article class="tile"><div class="bd"><div class="when">Umzug ohne Ranking-Verlust</div><h3>301-Weiterleitungen</h3><p>Alle alten Adressen auf die neuen – als .htaccess-Zeilen (der Server läuft auf Apache) und als Tabelle.</p><a class="btn btn-line" href="weiterleitungen.htaccess.txt">.htaccess</a> <a class="btn btn-line" href="weiterleitungen.csv" style="margin-top:8px">CSV</a></div></article>
+    <article class="tile"><div class="bd"><div class="when">Buchungssystem</div><h3>DIRS21 als Link statt Fenster</h3><p>Heute öffnet <code>d21_api.ibe.open()</code> die Buchung als Overlay – die Adresse ändert sich nie. Dabei funktioniert ein direkter Link bereits (getestet 30.10.2026):</p><p><code style="font-size:12.5px;overflow-wrap:anywhere">reservation.one.dirs21.de/hotel-am-leuchtturmde?range=2027-05-14,2027-05-17&amp;culture=de-DE&amp;show_results=true</code></p><p>Die Buchungs-Buttons sollten auf diesen Link führen (neues Fenster oder eigene Seite /buchen/) – dann funktioniert die Buchung auch ohne Cookie-Zustimmung.</p><a class="btn btn-line" href="https://reservation.one.dirs21.de/hotel-am-leuchtturmde?range=2027-05-14,2027-05-17&amp;culture=de-DE&amp;show_results=true" target="_blank" rel="noopener">Link testen ↗</a></div></article>
+  </div>
+</div></section>
+<section class="alt"><div class="wrap">
+  <h2 class="caps">Neue Seitenstruktur</h2><div class="rule"></div>
+  <p>Sprechende, kurze Adressen ohne Sprachkürzel in Großbuchstaben, ohne „1“ und „2“ im Namen. Doppelte Seiten (Kontakt, Impressum, Datenschutz und Anfahrt existieren heute je zweimal) werden zusammengeführt.</p>
+  <div class="table-wrap"><table><thead><tr><th>Alte Adresse(n)</th><th>Neue Adresse</th></tr></thead><tbody><tr><td>/DE/home.html</td><td><b>/</b></td></tr><tr><td>/DE/hotel-zimmer.html<br>/DE/hotel-zimmer/preise-konditionen.html</td><td><b>/zimmer/</b></td></tr><tr><td>/DE/hotel-zimmer/panorama-terrassen-dz.html</td><td><b>/zimmer/panorama-terrassen-doppelzimmer/</b></td></tr><tr><td>/DE/hotel-zimmer/panorama-dz.html</td><td><b>/zimmer/panorama-doppelzimmer/</b></td></tr><tr><td>/DE/hotel-zimmer/terrassen-dz.html</td><td><b>/zimmer/terrassen-doppelzimmer/</b></td></tr><tr><td>/DE/hotel-zimmer/dz-mit-ostseeblick.html</td><td><b>/zimmer/komfort-doppelzimmer/</b></td></tr><tr><td>/DE/hotel-zimmer/doppelzimmer2.html</td><td><b>/zimmer/doppelzimmer/</b></td></tr><tr><td>/DE/hotel-zimmer/einzelzimmer.html</td><td><b>/zimmer/einzelzimmer/</b></td></tr><tr><td>/DE/apartmenthaus-am-leuchtturm1.html<br>/DE/apartmenthaus-am-leuchtturm1/apartmenthaus-am-leuchtturm.html</td><td><b>/apartments/</b></td></tr><tr><td>/DE/arrangements.html</td><td><b>/angebote/</b></td></tr><tr><td>/DE/arrangements,arrangement-8-wintertage-in-warnemuende.html</td><td><b>/angebote/wintertage-in-warnemuende/</b></td></tr><tr><td>–</td><td><b>/buchen/</b></td></tr><tr><td>/DE/hotel-zimmer/fotogalerie.html</td><td><b>/galerie/</b></td></tr><tr><td>/DE/hotel-zimmer/gutscheine.html</td><td><b>/gutscheine/</b></td></tr><tr><td>/DE/hotel-zimmer/geschichte.html</td><td><b>/geschichte/</b></td></tr><tr><td>/DE/ueber-uns/lage--anfahrt.html<br>/DE/lageanfahrt.html</td><td><b>/lage-anfahrt/</b></td></tr><tr><td>/DE/ueber-uns.html<br>/DE/ueber-uns/kontakt1.html<br>/DE/kontakt.html</td><td><b>/kontakt/</b></td></tr><tr><td>/DE/ueber-uns/partnerseiten1.html<br>/DE/partnerseiten.html</td><td><b>/partner/</b></td></tr><tr><td>/DE/ueber-uns/impressum1.html<br>/DE/impressum.html</td><td><b>/impressum/</b></td></tr><tr><td>/DE/ueber-uns/datenschutz.html<br>/DE/datenschutz1.html</td><td><b>/datenschutz/</b></td></tr><tr><td>/DE/ueber-uns/agbs.html</td><td><b>/agb/</b></td></tr></tbody></table></div>
+  <p class="slots-h" style="margin-top:10px">Englisch nach demselben Muster unter /en/ (z. B. /en/rooms/panorama-terrace-double-room/).</p>
+</div></section>
+<section><div class="wrap narrow">
+  <h2 class="caps">Gefunden auf der heutigen Website</h2><div class="rule"></div>
+  <ul class="ticks">
+    <li><b>Wer Cookies ablehnt, kann nicht buchen:</b> Das DIRS21-Skript lädt erst nach Zustimmung; ohne Zustimmung passiert beim Klick auf „Buchen“ nichts (Fehler <code>d21_api is not defined</code>). Getestet am 30.10.2026.</li>
+    <li>Server meldet PHP 5.6.40 / 5.4.45 und OpenSSL 1.0.2 – alles ohne Sicherheitsupdates (5.6.40 ist die letzte PHP-5-Version, 2019). Die Seite war am 30.10.2026 mehrere Stunden komplett ausgefallen (Fehler 500); danach waren die PHP-Versionen andere als vorher.</li>
+    <li>Nicht vorhandene Seiten leiten per 302 auf die Startseite um statt „404 nicht gefunden“ zu melden – Suchmaschinen und KI-Agenten sehen tote Links als gültig.</li>
+    <li>Keine robots.txt, keine sitemap.xml, keine llms.txt.</li>
+    <li>Buchung als Overlay (DIRS21) ohne eigene Adresse – nicht teilbar, nicht verlinkbar.</li>
+    <li>Apartment-Seite zeigt Preise von 2023; Reinigung einmal „4-Tages-“, einmal „3-Tages-Rhythmus“.</li>
+    <li>Zimmerseiten: „max. 2 Erwachsene“ – Preisliste: „Aufbettung 3. Person“.</li>
+    <li>Geschichte: „1850“ – Anfahrt: „1851 errichtet“.</li>
+    <li>Seitentitel „Preie &amp; Konditionen“ (Tippfehler) erscheint so in Google.</li>
+    <li>Bewertungen nur als Grafik-Link, Fotos ohne Beschreibung und mit technischen Dateinamen.</li>
+  </ul>
+</div></section>
+
+</main>
+<footer><div class="wrap">
+  <div class="fcols">
+    <div><div class="fbrand">Hotel am Leuchtturm<small>Seit 1850 in Warnemünde</small></div>
+      <p style="margin-top:18px">Am Leuchtturm 16<br>18119 Rostock-Warnemünde<br>Tel. <a href="tel:+4938154370">0381 5 43 70</a><br><a href="mailto:info@hotel-am-leuchtturm.de">info@hotel-am-leuchtturm.de</a></p></div>
+    <div><h4>Hotel</h4><p><a href="../zimmer/index.html">Zimmer &amp; Preise</a><br><a href="../apartments.html">Apartmenthaus</a><br><a href="../angebote/index.html">Angebote</a><br><a href="../galerie.html">Galerie</a><br><a href="#" data-toast="Gutscheine: online kaufen, als PDF erhalten und per Code in der Buchung einlösen.">Gutscheine</a></p></div>
+    <div><h4>Service</h4><p><a href="../lage-anfahrt.html">Lage &amp; Anfahrt</a><br><a href="../index.html#fragen">Häufige Fragen</a><br><a href="../geschichte.html">Geschichte</a><br><a href="../buchen.html">Online buchen</a></p></div>
+    <div><h4>Rechtliches</h4><p><a href="https://www.hotel-am-leuchtturm.de/DE/ueber-uns/impressum1.html">Impressum des Hotels</a><br><a href="https://www.hotel-am-leuchtturm.de/DE/ueber-uns/datenschutz.html">Datenschutz</a><br><a href="https://www.hotel-am-leuchtturm.de/DE/ueber-uns/agbs.html">AGB</a></p></div>
+  </div>
+  <div class="fnote">Konzeptentwurf zur Neugestaltung von hotel-am-leuchtturm.de · Inhalte, Zimmerdaten und Preise 2026 von der aktuellen Website des Hotels; Verfügbarkeiten, Frühstückspreis, Kurtaxe und als „Vorschlag“ markierte Leistungen sind Beispiele. Fotos © Hotel am Leuchtturm. · <a href="../vorschlag/index.html">Technik-Paket (Sitemap, robots.txt, llms.txt, Weiterleitungen)</a> · <a href="../impressum.html">Impressum dieses Entwurfs</a></div>
+</div></footer>
+
+<div class="lightbox" id="lightbox" role="dialog" aria-label="Foto"><img alt=""></div>
+<div class="toast" id="toast" role="status"></div>
+<script src="../assets/site.js"></script>
+</body>
+</html>

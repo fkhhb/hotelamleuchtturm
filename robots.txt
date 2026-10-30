@@ -1,0 +1,3 @@
+# Konzeptentwurf – bitte nicht indexieren.
+User-agent: *
+Disallow: /

@@ -1,0 +1,84 @@
+# Hotel am Leuchtturm – concept website
+
+A clickable concept for a new website for [Hotel am Leuchtturm](https://www.hotel-am-leuchtturm.de/DE/home.html), Warnemünde. It shows how the site could look and how booking could work: every step has its own URL, room pages show the next free dates, and AI assistants and search engines can read the facts.
+
+**Live:** https://hotelamleuchtturm.mndst.co (blocked for search engines and AI crawlers, see below)
+
+> **Concept, not the hotel's official website.** Texts, room data, 2026 prices and photos come from the hotel's current website. Free dates, breakfast price, Kurtaxe and anything labelled „Vorschlag" or „Demo" are examples. No bookings are taken and no personal data is collected.
+
+## What's in it
+
+| Page | File | What it shows |
+| --- | --- | --- |
+| Homepage | `index.html` | Search box → booking with dates in the URL, room cards with next free dates, breakfast lounge, lobby, offers, reviews (placeholders for real quotes), FAQ |
+| Rooms & prices | `zimmer/index.html` | All six categories, the real 2026 price table, conditions, minimum stays |
+| Room pages | `zimmer/*.html` | Gallery, facts as text (size, floor, view, bed), sticky booking box with total price and next free dates |
+| Booking | `buchen.html` | 4 steps (room → rate → extras → summary). Every step is in the URL and survives reload/sharing. Step 4 links to the hotel's real DIRS21 booking with the same dates |
+| Apartments | `apartments.html` | Apartment house incl. the (outdated) 2023 prices, flagged |
+| Offer | `angebote/wintertage-in-warnemuende.html` | Real winter package, button opens booking pre-filled |
+| History, location, gallery | `geschichte.html`, `lage-anfahrt.html`, `galerie.html` | Timeline since 1850, directions and parking, photo gallery with lightbox |
+| Tech package | `vorschlag/` | For the hotel's web agency: `sitemap.xml`, `robots.txt`, `llms.txt`, `schema-hotel.json`, 301 redirects (`.htaccess` + CSV), list of issues found |
+
+Yellow numbered notes explain which recommendation each element demonstrates. Visitors can hide them with the button in the top banner.
+
+## Key findings from the live site (30 Oct 2026)
+
+- **Guests who decline cookies cannot book.** The DIRS21 script only loads after consent; without it the booking button does nothing (`d21_api is not defined`).
+- **Booking has no URL.** DIRS21 opens as an overlay. A direct link already works and should be used instead:
+  `https://reservation.one.dirs21.de/hotel-am-leuchtturmde?range=2027-05-14,2027-05-17&culture=de-DE&show_results=true`
+- **Server runs end-of-life PHP 5.x / OpenSSL 1.0.2.** The site was down for several hours on 30 Oct 2026 (HTTP 500 on every page).
+- No `robots.txt`, `sitemap.xml` or `llms.txt`. Unknown pages redirect to the homepage instead of returning 404.
+- Contradictions: 2023 apartment prices, cleaning every 3 vs. 4 days, "max. 2 adults" vs. "extra bed for 3rd person", founded 1850 vs. 1851, page title typo „Preie & Konditionen".
+
+## Real data vs. demo
+
+| Real (from hotel-am-leuchtturm.de) | Demo / proposal |
+| --- | --- |
+| Room facts, floors, sizes, beds, equipment | Availability and "next free dates" (simulated) |
+| 2026 seasonal prices, extra bed 75 € | Breakfast price (22 € p.p./night) |
+| 14-day free cancellation, payment methods, check-in/out | Kurtaxe (3 € p.p./night) |
+| Parking at Kurhaus garage, 14 € / 24 h | Non-refundable saver rate −10 %, late check-out, Sekt |
+| History, directions, winter offer (ab 105 €) | Hanse Sail and cruise pages ("Seite folgt") |
+| Kayak score 8.9 from 881 reviews (Oct 2026) | Review quotes (empty placeholders) |
+
+Demo values live at the top of `assets/site.js` (`BREAKFAST`, `KURTAXE`, `SAVER`, `EXTRAS`) and in the availability functions `freeNight` / `nextFree`.
+
+## Structure
+
+```
+index.html, buchen.html, …   generated pages (do not edit by hand)
+zimmer/, angebote/, vorschlag/
+assets/site.css               styles (hotel colours: navy #00284b, sea #376f8d, aqua #a6d9e2)
+assets/site.js                room data, prices, booking logic, URL state
+img/                          photos © Hotel am Leuchtturm, logo, favicon
+quelle/build_site.py          page generator (not deployed)
+vercel.json                   clean URLs + X-Robots-Tag: noindex
+robots.txt                    Disallow: / (concept must not be indexed)
+```
+
+## Editing
+
+Pages are generated. Change texts, rooms or the tech package in `quelle/build_site.py`, then rebuild:
+
+```bash
+python3 quelle/build_site.py
+```
+
+Styles and behaviour are edited directly in `assets/site.css` and `assets/site.js`. To swap a photo, replace the file in `img/` with the same name.
+
+Preview locally:
+
+```bash
+python3 -m http.server 8000
+```
+
+## Deployment
+
+Vercel project in the mndst team, connected to this repo. Every push to `main` deploys. Domain `hotelamleuchtturm.mndst.co` (CNAME to `cname.vercel-dns.com` at GoDaddy). No build step: static files from the repo root; `quelle/` and this README are excluded via `.vercelignore`.
+
+**Indexing is deliberately blocked** (`robots.txt`, `X-Robots-Tag`, `<meta name="robots">`), so demo prices never show up in Google or AI answers about the real hotel. The `robots.txt`, `sitemap.xml` and `llms.txt` meant for the hotel's own domain live in `vorschlag/`.
+
+## Before sharing publicly
+
+- [ ] Fill in the publisher details in `impressum.html` (via `imprint()` in `quelle/build_site.py`). A public site in Germany needs them.
+- [ ] Replace the review placeholders with real quotes (name, source, date) once the hotel agrees.

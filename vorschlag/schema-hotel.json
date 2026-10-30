@@ -1,0 +1,155 @@
+{
+  "@context": "https://schema.org",
+  "@type": "Hotel",
+  "name": "Hotel am Leuchtturm",
+  "url": "https://www.hotel-am-leuchtturm.de/",
+  "description": "Inhabergeführtes Boutique-Hotel an der Strandpromenade von Warnemünde, direkt am Leuchtturm. 30 Zimmer, Frühstückslounge mit Promenadenblick, Lobby mit Kamin.",
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "Am Leuchtturm 16",
+    "postalCode": "18119",
+    "addressLocality": "Rostock-Warnemünde",
+    "addressCountry": "DE"
+  },
+  "telephone": "+49 381 54370",
+  "email": "info@hotel-am-leuchtturm.de",
+  "checkinTime": "15:00",
+  "checkoutTime": "11:00",
+  "numberOfRooms": 30,
+  "petsAllowed": false,
+  "foundingDate": "1850",
+  "priceRange": "139–339 € pro Zimmer und Nacht (ohne Frühstück)",
+  "amenityFeature": [
+    {
+      "@type": "LocationFeatureSpecification",
+      "name": "Kostenloses WLAN",
+      "value": true
+    },
+    {
+      "@type": "LocationFeatureSpecification",
+      "name": "24-Stunden-Rezeption",
+      "value": true
+    },
+    {
+      "@type": "LocationFeatureSpecification",
+      "name": "Frühstückslounge",
+      "value": true
+    },
+    {
+      "@type": "LocationFeatureSpecification",
+      "name": "Lobby mit Kamin",
+      "value": true
+    },
+    {
+      "@type": "LocationFeatureSpecification",
+      "name": "Zimmer mit Dachterrasse",
+      "value": true
+    }
+  ],
+  "containsPlace": [
+    {
+      "@type": "HotelRoom",
+      "name": "Panorama-Terrassen-Doppelzimmer",
+      "url": "https://www.hotel-am-leuchtturm.de/zimmer/panorama-terrassen-doppelzimmer/",
+      "bed": "Doppelbett 180 × 200 cm, Komforthöhe, elektrisch verstellbarer Lattenrost",
+      "occupancy": {
+        "@type": "QuantitativeValue",
+        "maxValue": 2
+      }
+    },
+    {
+      "@type": "HotelRoom",
+      "name": "Panorama-Doppelzimmer",
+      "url": "https://www.hotel-am-leuchtturm.de/zimmer/panorama-doppelzimmer/",
+      "bed": "Doppelbett 180 × 200 cm, Komforthöhe, elektrisch verstellbarer Lattenrost",
+      "occupancy": {
+        "@type": "QuantitativeValue",
+        "maxValue": 2
+      }
+    },
+    {
+      "@type": "HotelRoom",
+      "name": "Terrassen-Doppelzimmer",
+      "url": "https://www.hotel-am-leuchtturm.de/zimmer/terrassen-doppelzimmer/",
+      "bed": "Doppelbett 180 × 200 cm, Komforthöhe",
+      "occupancy": {
+        "@type": "QuantitativeValue",
+        "maxValue": 2
+      }
+    },
+    {
+      "@type": "HotelRoom",
+      "name": "Komfort-Doppelzimmer",
+      "url": "https://www.hotel-am-leuchtturm.de/zimmer/komfort-doppelzimmer/",
+      "bed": "Doppelbett 180 × 200 cm, Komforthöhe, teilweise extra lang (2,10 m)",
+      "occupancy": {
+        "@type": "QuantitativeValue",
+        "maxValue": 2
+      }
+    },
+    {
+      "@type": "HotelRoom",
+      "name": "Doppelzimmer",
+      "url": "https://www.hotel-am-leuchtturm.de/zimmer/doppelzimmer/",
+      "bed": "Doppelbett 180 × 200 cm, Komforthöhe",
+      "occupancy": {
+        "@type": "QuantitativeValue",
+        "maxValue": 2
+      }
+    },
+    {
+      "@type": "HotelRoom",
+      "name": "Einzelzimmer",
+      "url": "https://www.hotel-am-leuchtturm.de/zimmer/einzelzimmer/",
+      "bed": "Queensize-Bett 100 × 200 cm, Komforthöhe",
+      "occupancy": {
+        "@type": "QuantitativeValue",
+        "maxValue": 2
+      }
+    }
+  ],
+  "makesOffer": [
+    {
+      "@type": "Offer",
+      "name": "Panorama-Terrassen-Doppelzimmer",
+      "price": 269,
+      "priceCurrency": "EUR",
+      "description": "ab-Preis pro Nacht, Nebensaison 2026, ohne Frühstück"
+    },
+    {
+      "@type": "Offer",
+      "name": "Panorama-Doppelzimmer",
+      "price": 259,
+      "priceCurrency": "EUR",
+      "description": "ab-Preis pro Nacht, Nebensaison 2026, ohne Frühstück"
+    },
+    {
+      "@type": "Offer",
+      "name": "Terrassen-Doppelzimmer",
+      "price": 219,
+      "priceCurrency": "EUR",
+      "description": "ab-Preis pro Nacht, Nebensaison 2026, ohne Frühstück"
+    },
+    {
+      "@type": "Offer",
+      "name": "Komfort-Doppelzimmer",
+      "price": 209,
+      "priceCurrency": "EUR",
+      "description": "ab-Preis pro Nacht, Nebensaison 2026, ohne Frühstück"
+    },
+    {
+      "@type": "Offer",
+      "name": "Doppelzimmer",
+      "price": 179,
+      "priceCurrency": "EUR",
+      "description": "ab-Preis pro Nacht, Nebensaison 2026, ohne Frühstück"
+    },
+    {
+      "@type": "Offer",
+      "name": "Einzelzimmer",
+      "price": 139,
+      "priceCurrency": "EUR",
+      "description": "ab-Preis pro Nacht, Nebensaison 2026, ohne Frühstück"
+    }
+  ]
+}

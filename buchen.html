@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Online buchen – Hotel am Leuchtturm Warnemünde</title>
+<meta name="description" content="Zimmer im Hotel am Leuchtturm direkt beim Hotel buchen – mit Gesamtpreis, Extras und teilbarem Buchungslink.">
+<meta name="robots" content="noindex, nofollow">
+<link rel="icon" href="img/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/site.css">
+
+</head>
+<body class="notes" data-root="">
+<div class="concept" role="note"><span><b>Konzeptentwurf</b> für eine neue Website des Hotel am Leuchtturm – keine offizielle Seite. Verfügbarkeiten und markierte Werte sind Demo. Echte Buchung: <a href="https://www.hotel-am-leuchtturm.de/DE/home.html">hotel-am-leuchtturm.de</a></span><button type="button" id="toggleNotes">Hinweise ausblenden</button></div>
+<header class="top"><div class="wrap bar">
+  <a class="brand" href="index.html" aria-label="Hotel am Leuchtturm – Startseite"><img src="img/logo-header.jpg" alt="Hotel am Leuchtturm – seit 1850 in Warnemünde" width="248" height="100"></a>
+  <ul class="menu" id="menu"><li><a href="zimmer/index.html">Zimmer</a></li><li><a href="apartments.html">Apartments</a></li><li><a href="angebote/index.html">Angebote</a></li><li><a href="lage-anfahrt.html">Lage</a></li><li><a href="geschichte.html">Geschichte</a></li></ul>
+  <a class="lang" href="#" data-toast="Die englische Version folgt demselben Aufbau unter /en/ – inklusive englischer Buchungsstrecke."><b>DE</b> | EN</a>
+  <a class="btn btn-navy" href="buchen.html">Jetzt buchen</a>
+  <button class="burger" type="button" aria-label="Menü" aria-controls="menu" aria-expanded="false"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M3 12h18M3 18h18"/></svg></button>
+</div></header>
+<main>
+
+<div class="wrap crumbs"><a href="index.html">Startseite</a> › Online buchen</div>
+<section style="padding-top:22px" id="booking"><div class="wrap">
+  <div class="eyebrow">Direkt beim Hotel · Bestpreis</div><h1 class="caps" style="font-size:clamp(30px,4vw,46px)">Online buchen</h1>
+  <form class="searchbox" id="k-form" style="margin-top:22px;box-shadow:none;border:1px solid var(--line)">
+    <div class="field"><label for="k-arr">Anreise</label><input type="date" id="k-arr"></div>
+    <div class="field"><label for="k-dep">Abreise</label><input type="date" id="k-dep"></div>
+    <div class="field"><label for="k-ad">Gäste</label><select id="k-ad"><option value="1">1 Erwachsener</option><option value="2">2 Erwachsene</option></select></div>
+    <div></div>
+    <button class="btn btn-line" type="submit">Daten ändern</button>
+  </form>
+  <nav class="stepper" id="stepper" aria-label="Buchungsschritte"><a href="#">1 · Zimmer</a><a href="#">2 · Rate</a><a href="#">3 · Extras</a><a href="#">4 · Übersicht</a></nav>
+  <div class="bk"><div id="step"></div><aside class="summary" id="summary"></aside></div>
+  <div class="share"><span>Teilbarer Link zu genau diesem Stand:</span><code class="js-url"></code><button type="button" data-copy>Link kopieren</button></div>
+</div></section>
+
+</main>
+<footer><div class="wrap">
+  <div class="fcols">
+    <div><div class="fbrand">Hotel am Leuchtturm<small>Seit 1850 in Warnemünde</small></div>
+      <p style="margin-top:18px">Am Leuchtturm 16<br>18119 Rostock-Warnemünde<br>Tel. <a href="tel:+4938154370">0381 5 43 70</a><br><a href="mailto:info@hotel-am-leuchtturm.de">info@hotel-am-leuchtturm.de</a></p></div>
+    <div><h4>Hotel</h4><p><a href="zimmer/index.html">Zimmer &amp; Preise</a><br><a href="apartments.html">Apartmenthaus</a><br><a href="angebote/index.html">Angebote</a><br><a href="galerie.html">Galerie</a><br><a href="#" data-toast="Gutscheine: online kaufen, als PDF erhalten und per Code in der Buchung einlösen.">Gutscheine</a></p></div>
+    <div><h4>Service</h4><p><a href="lage-anfahrt.html">Lage &amp; Anfahrt</a><br><a href="index.html#fragen">Häufige Fragen</a><br><a href="geschichte.html">Geschichte</a><br><a href="buchen.html">Online buchen</a></p></div>
+    <div><h4>Rechtliches</h4><p><a href="https://www.hotel-am-leuchtturm.de/DE/ueber-uns/impressum1.html">Impressum des Hotels</a><br><a href="https://www.hotel-am-leuchtturm.de/DE/ueber-uns/datenschutz.html">Datenschutz</a><br><a href="https://www.hotel-am-leuchtturm.de/DE/ueber-uns/agbs.html">AGB</a></p></div>
+  </div>
+  <div class="fnote">Konzeptentwurf zur Neugestaltung von hotel-am-leuchtturm.de · Inhalte, Zimmerdaten und Preise 2026 von der aktuellen Website des Hotels; Verfügbarkeiten, Frühstückspreis, Kurtaxe und als „Vorschlag“ markierte Leistungen sind Beispiele. Fotos © Hotel am Leuchtturm. · <a href="vorschlag/index.html">Technik-Paket (Sitemap, robots.txt, llms.txt, Weiterleitungen)</a> · <a href="impressum.html">Impressum dieses Entwurfs</a></div>
+</div></footer>
+<div class="mbar"><span id="mbar-txt"><b>Ab 139 € pro Nacht</b>Bestpreis bei Direktbuchung</span><a class="btn btn-navy" href="buchen.html">Buchen</a></div>
+<div class="lightbox" id="lightbox" role="dialog" aria-label="Foto"><img alt=""></div>
+<div class="toast" id="toast" role="status"></div>
+<script src="assets/site.js"></script>
+</body>
+</html>
