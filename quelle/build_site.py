@@ -57,22 +57,69 @@ HOTEL_LD = {
 
 def ld(obj): return '<script type="application/ld+json">' + json.dumps(obj, ensure_ascii=False) + "</script>"
 
-def page(path, title, desc, body, active="", schema=None, mbar=True, mbar_href=None):
+# ---------- Sprachen ----------
+EN_SLUG = {"panorama-terrassen-doppelzimmer":"panorama-terrace-double-room","panorama-doppelzimmer":"panorama-double-room",
+           "terrassen-doppelzimmer":"terrace-double-room","komfort-doppelzimmer":"comfort-double-room",
+           "doppelzimmer":"double-room","einzelzimmer":"single-room"}
+PAIRS = {"index.html":"en/index.html","zimmer/index.html":"en/rooms/index.html","apartments.html":"en/apartments.html",
+         "angebote/index.html":"en/offers/index.html","angebote/wintertage-in-warnemuende.html":"en/offers/winter-days-in-warnemuende.html",
+         "geschichte.html":"en/history.html","lage-anfahrt.html":"en/location.html","galerie.html":"en/gallery.html","buchen.html":"en/book.html"}
+PAIRS.update({f"zimmer/{de}.html": f"en/rooms/{en}.html" for de,en in EN_SLUG.items()})
+PAIRS_INV = {v:k for k,v in PAIRS.items()}
+
+def ui(lang, R):
+    if lang == "en":
+        return dict(
+          menu=[("en/rooms/index.html","Rooms"),("en/apartments.html","Apartments"),("en/offers/index.html","Offers"),("en/location.html","Location"),("en/history.html","History")],
+          concept=f'<b>Concept draft</b> for a new website of Hotel am Leuchtturm – not the hotel\'s official site. Availability and marked values are demo. Real booking: <a href="{REAL}/EN/home.html">hotel-am-leuchtturm.de</a>',
+          notes="Hide notes", home="Hotel am Leuchtturm – home", logo_alt="Hotel am Leuchtturm – since 1850 in Warnemünde", menu_label="Menu",
+          book=("en/book.html","Book now"), mbar=("From €139 per night","Best rate when booking direct","Book","Continue"),
+          f_since="Since 1850 in Warnemünde", f_tel="Phone",
+          f_hotel=("Hotel", [("en/rooms/index.html","Rooms &amp; rates"),("en/apartments.html","Apartment house"),("en/offers/index.html","Offers"),("en/gallery.html","Gallery")]),
+          f_service=("Service", [("en/location.html","Location &amp; directions"),("en/index.html#faq","FAQ"),("en/history.html","History"),("en/book.html","Book online")]),
+          f_legal=("Legal", [(f"{REAL}/DE/ueber-uns/impressum1.html","Hotel imprint"),(f"{REAL}/DE/ueber-uns/datenschutz.html","Privacy"),(f"{REAL}/DE/ueber-uns/agbs.html","Terms")]),
+          fnote=f'Concept draft for a redesign of hotel-am-leuchtturm.de · Content, room data and 2026 rates from the hotel\'s current website; availability, breakfast price, visitor\'s tax and items marked "proposal" are examples. Photos © Hotel am Leuchtturm; cover photo: A.Savin, Wikipedia (Free Art License). · <a href="{R}impressum.html">Imprint of this draft</a>',
+          photo="Photo", og="en_GB")
+    return dict(
+      menu=[("zimmer/index.html","Zimmer"),("apartments.html","Apartments"),("angebote/index.html","Angebote"),("lage-anfahrt.html","Lage"),("geschichte.html","Geschichte")],
+      concept=f'<b>Konzeptentwurf</b> für eine neue Website des Hotel am Leuchtturm – keine offizielle Seite. Verfügbarkeiten und markierte Werte sind Demo. Echte Buchung: <a href="{REAL}/DE/home.html">hotel-am-leuchtturm.de</a>',
+      notes="Hinweise ausblenden", home="Hotel am Leuchtturm – Startseite", logo_alt="Hotel am Leuchtturm – seit 1850 in Warnemünde", menu_label="Menü",
+      book=("buchen.html","Jetzt buchen"), mbar=("Ab 139 € pro Nacht","Bestpreis bei Direktbuchung","Buchen","Weiter"),
+      f_since="Seit 1850 in Warnemünde", f_tel="Tel.",
+      f_hotel=("Hotel", [("zimmer/index.html","Zimmer &amp; Preise"),("apartments.html","Apartmenthaus"),("angebote/index.html","Angebote"),("galerie.html","Galerie")]),
+      f_service=("Service", [("lage-anfahrt.html","Lage &amp; Anfahrt"),("index.html#fragen","Häufige Fragen"),("geschichte.html","Geschichte"),("buchen.html","Online buchen")]),
+      f_legal=("Rechtliches", [(f"{REAL}/DE/ueber-uns/impressum1.html","Impressum des Hotels"),(f"{REAL}/DE/ueber-uns/datenschutz.html","Datenschutz"),(f"{REAL}/DE/ueber-uns/agbs.html","AGB")]),
+      fnote=f'Konzeptentwurf zur Neugestaltung von hotel-am-leuchtturm.de · Inhalte, Zimmerdaten und Preise 2026 von der aktuellen Website des Hotels; Verfügbarkeiten, Frühstückspreis, Kurtaxe und als „Vorschlag“ markierte Leistungen sind Beispiele. Fotos © Hotel am Leuchtturm; Titelbild: A.Savin, Wikipedia (Free Art License). · <a href="{R}vorschlag/index.html">Technik-Paket (Sitemap, robots.txt, llms.txt, Weiterleitungen)</a> · <a href="{R}impressum.html">Impressum dieses Entwurfs</a>',
+      photo="Foto", og="de_DE")
+
+def page(path, title, desc, body, active="", schema=None, mbar=True, mbar_href=None, lang="de"):
     depth = path.count("/")
     R = "../" * depth
-    nav = "".join(f'<li><a href="{R}{h}"{" aria-current=page" if h==active else ""}>{t}</a></li>' for h,t in MENU)
+    U = ui(lang, R)
+    link = lambda h: h if h.startswith("http") else R + h
+    nav = "".join(f'<li><a href="{R}{h}"{" aria-current=page" if h==active else ""}>{t}</a></li>' for h,t in U["menu"])
     sch = ld(schema) if schema else ""
-    mb = f'<div class="mbar"><span id="mbar-txt"><b>Ab 139 € pro Nacht</b>Bestpreis bei Direktbuchung</span><a class="btn btn-navy" href="{mbar_href or R + 'buchen.html'}">{'Weiter' if mbar_href else 'Buchen'}</a></div>' if mbar else ""
+    de_path = path if lang == "de" else PAIRS_INV.get(path)
+    en_path = PAIRS.get(path) if lang == "de" else path
+    if lang == "en" and not de_path: de_path = "index.html"
+    if lang == "de" and not en_path: en_path = "en/index.html"
+    alts = (f'<link rel="alternate" hreflang="de" href="{LIVE}/{de_path}">\n<link rel="alternate" hreflang="en" href="{LIVE}/{en_path}">\n<link rel="alternate" hreflang="x-default" href="{LIVE}/{de_path}">') if (path in PAIRS or path in PAIRS_INV) else ""
+    langsw = (f'<span class="lang"><a href="{R}{de_path}" hreflang="de" lang="de"{" aria-current=true" if lang=="de" else ""}>DE</a> | '
+              f'<a href="{R}{en_path}" hreflang="en" lang="en"{" aria-current=true" if lang=="en" else ""}>EN</a></span>')
+    m = U["mbar"]
+    mb = f'<div class="mbar"><span id="mbar-txt"><b>{m[0]}</b>{m[1]}</span><a class="btn btn-navy" href="{mbar_href or R + U["book"][0]}">{m[3] if mbar_href else m[2]}</a></div>' if mbar else ""
+    fcol = lambda c: f'<div><h4>{c[0]}</h4><p>' + "<br>".join(f'<a href="{link(h)}">{t}</a>' for h,t in c[1]) + '</p></div>'
     doc = f"""<!doctype html>
-<html lang="de">
+<html lang="{lang}">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>{e(title)}</title>
 <meta name="description" content="{e(desc)}">
 <meta name="robots" content="noindex, nofollow">
+{alts}
 <meta property="og:type" content="website">
-<meta property="og:locale" content="de_DE">
+<meta property="og:locale" content="{U['og']}">
 <meta property="og:site_name" content="Hotel am Leuchtturm – Konzeptentwurf">
 <meta property="og:title" content="{e(title)}">
 <meta property="og:description" content="{e(desc)}">
@@ -87,29 +134,29 @@ def page(path, title, desc, body, active="", schema=None, mbar=True, mbar_href=N
 {sch}
 </head>
 <body class="notes" data-root="{R}">
-<div class="concept" role="note"><span><b>Konzeptentwurf</b> für eine neue Website des Hotel am Leuchtturm – keine offizielle Seite. Verfügbarkeiten und markierte Werte sind Demo. Echte Buchung: <a href="{REAL}/DE/home.html">hotel-am-leuchtturm.de</a></span><button type="button" id="toggleNotes">Hinweise ausblenden</button></div>
+<div class="concept" role="note"><span>{U['concept']}</span><button type="button" id="toggleNotes">{U['notes']}</button></div>
 <header class="top"><div class="wrap bar">
-  <a class="brand" href="{R}index.html" aria-label="Hotel am Leuchtturm – Startseite"><img src="{R}img/logo-header.jpg" alt="Hotel am Leuchtturm – seit 1850 in Warnemünde" width="248" height="100"></a>
+  <a class="brand" href="{R}{'en/index.html' if lang=='en' else 'index.html'}" aria-label="{U['home']}"><img src="{R}img/logo-header.jpg" alt="{U['logo_alt']}" width="248" height="100"></a>
   <ul class="menu" id="menu">{nav}</ul>
-  <a class="lang" href="#" data-toast="Die englische Version folgt demselben Aufbau unter /en/ – inklusive englischer Buchungsstrecke."><b>DE</b> | EN</a>
-  <a class="btn btn-navy" href="{R}buchen.html">Jetzt buchen</a>
-  <button class="burger" type="button" aria-label="Menü" aria-controls="menu" aria-expanded="false"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M3 12h18M3 18h18"/></svg></button>
+  {langsw}
+  <a class="btn btn-navy" href="{R}{U['book'][0]}">{U['book'][1]}</a>
+  <button class="burger" type="button" aria-label="{U['menu_label']}" aria-controls="menu" aria-expanded="false"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M3 12h18M3 18h18"/></svg></button>
 </div></header>
 <main>
 {body}
 </main>
 <footer><div class="wrap">
   <div class="fcols">
-    <div><div class="fbrand">Hotel am Leuchtturm<small>Seit 1850 in Warnemünde</small></div>
-      <p style="margin-top:18px">Am Leuchtturm 16<br>18119 Rostock-Warnemünde<br>Tel. <a href="tel:{TEL_HREF}">{TEL}</a><br><a href="mailto:{MAIL}">{MAIL}</a></p></div>
-    <div><h4>Hotel</h4><p><a href="{R}zimmer/index.html">Zimmer &amp; Preise</a><br><a href="{R}apartments.html">Apartmenthaus</a><br><a href="{R}angebote/index.html">Angebote</a><br><a href="{R}galerie.html">Galerie</a><br><a href="#" data-toast="Gutscheine: online kaufen, als PDF erhalten und per Code in der Buchung einlösen.">Gutscheine</a></p></div>
-    <div><h4>Service</h4><p><a href="{R}lage-anfahrt.html">Lage &amp; Anfahrt</a><br><a href="{R}index.html#fragen">Häufige Fragen</a><br><a href="{R}geschichte.html">Geschichte</a><br><a href="{R}buchen.html">Online buchen</a></p></div>
-    <div><h4>Rechtliches</h4><p><a href="{REAL}/DE/ueber-uns/impressum1.html">Impressum des Hotels</a><br><a href="{REAL}/DE/ueber-uns/datenschutz.html">Datenschutz</a><br><a href="{REAL}/DE/ueber-uns/agbs.html">AGB</a></p></div>
+    <div><div class="fbrand">Hotel am Leuchtturm<small>{U['f_since']}</small></div>
+      <p style="margin-top:18px">Am Leuchtturm 16<br>18119 Rostock-Warnemünde{'<br>Germany' if lang=='en' else ''}<br>{U['f_tel']} <a href="tel:{TEL_HREF}">{TEL if lang=='de' else '+49 381 54370'}</a><br><a href="mailto:{MAIL}">{MAIL}</a></p></div>
+    {fcol(U['f_hotel'])}
+    {fcol(U['f_service'])}
+    {fcol(U['f_legal'])}
   </div>
-  <div class="fnote">Konzeptentwurf zur Neugestaltung von hotel-am-leuchtturm.de · Inhalte, Zimmerdaten und Preise 2026 von der aktuellen Website des Hotels; Verfügbarkeiten, Frühstückspreis, Kurtaxe und als „Vorschlag“ markierte Leistungen sind Beispiele. Fotos © Hotel am Leuchtturm; Titelbild: A.Savin, Wikipedia (Free Art License). · <a href="{R}vorschlag/index.html">Technik-Paket (Sitemap, robots.txt, llms.txt, Weiterleitungen)</a> · <a href="{R}impressum.html">Impressum dieses Entwurfs</a></div>
+  <div class="fnote">{U['fnote']}</div>
 </div></footer>
 {mb}
-<div class="lightbox" id="lightbox" role="dialog" aria-label="Foto"><img alt=""></div>
+<div class="lightbox" id="lightbox" role="dialog" aria-label="{U['photo']}"><img alt=""></div>
 <div class="toast" id="toast" role="status"></div>
 <script src="{R}assets/site.js"></script>
 </body>
@@ -533,13 +580,21 @@ NEW = [  # (neuer Pfad, alte Pfade, Priorität, changefreq)
  ("/agb/", ["/DE/ueber-uns/agbs.html"], "0.1", "yearly"),
 ]
 
+EN_URL = {"/":"/en/","/zimmer/":"/en/rooms/","/apartments/":"/en/apartments/","/angebote/":"/en/offers/",
+          "/angebote/wintertage-in-warnemuende/":"/en/offers/winter-days-in-warnemuende/","/buchen/":"/en/book/","/galerie/":"/en/gallery/",
+          "/gutscheine/":"/en/vouchers/","/geschichte/":"/en/history/","/lage-anfahrt/":"/en/location/","/kontakt/":"/en/contact/",
+          "/partner/":"/en/partners/","/impressum/":"/en/imprint/","/datenschutz/":"/en/privacy/","/agb/":"/en/terms/"}
+def en_url(new):
+    if new.startswith("/zimmer/") and new != "/zimmer/": return "/en/rooms/" + EN_SLUG[new.split("/")[2]] + "/"
+    return EN_URL[new]
+
 def tech():
     V = os.path.join(OUT, "vorschlag"); os.makedirs(V, exist_ok=True)
     # sitemap.xml
     urls = []
     for new, _, prio, freq in NEW:
         if new == "/buchen/": continue
-        en = "/en" + new
+        en = en_url(new)
         urls.append(f"""  <url>
     <loc>{REAL}{new}</loc>
     <lastmod>{TODAY}</lastmod>
@@ -605,6 +660,8 @@ Mindestaufenthalt: Wochenende Nebensaison 2 Nächte, Zwischensaison 4, Hauptsais
 - [Wintertage in Warnemünde]({REAL}/angebote/wintertage-in-warnemuende/): 28.10.–20.12.2026, ab 105 € pro Person und Nacht im Doppelzimmer inkl. Frühstück, Kurtaxe, Parken und Heißgetränk am Kamin.
 
 ## Weitere Seiten
+
+- [English version]({REAL}/en/)
 
 - [Lage & Anfahrt]({REAL}/lage-anfahrt/)
 - [Geschichte seit 1850]({REAL}/geschichte/)
@@ -673,6 +730,406 @@ def hosting():
         "headers": [{"source":"/(.*)","headers":[{"key":"X-Robots-Tag","value":"noindex, nofollow, noarchive"}]}]
     }, indent=2))
 
+
+
+# =====================================================================
+# Englische Version (/en/) – gleiche Fakten wie die deutsche Seite
+# =====================================================================
+ROOMS_EN = {
+ "panorama-terrassen-doppelzimmer": dict(name="Panorama Terrace Double Room", tag="Direct sea view and a 40 m² roof terrace", view="Direct sea view", floor="1st floor", size="20 m² (excl. bathroom)",
+    bed="Double bed 180 × 200 cm, comfort height, electrically adjustable slatted frame", occ="max. 2 adults", bath="shower or shower and bathtub",
+    special="The highlight: the 40 m² roof terrace – furnished in summer with a beach chair, two loungers and more seating – and the direct view of the Baltic Sea.", chip="40 m² roof terrace"),
+ "panorama-doppelzimmer": dict(name="Panorama Double Room", tag="Direct sea view from the 2nd and 3rd floor", view="Direct sea view", floor="2nd and 3rd floor", size="20 m² (excl. bathroom)",
+    bed="Double bed 180 × 200 cm, comfort height, electrically adjustable slatted frame", occ="max. 2 adults", bath="shower or shower and bathtub",
+    special="Full of light, with a direct view of the beach and the Baltic Sea – at sunset one of the finest views in Warnemünde.", chip=""),
+ "terrassen-doppelzimmer": dict(name="Terrace Double Room", tag="Private 12 m² roof terrace", view="Side sea view or view of the lighthouse and harbour entrance", floor="1st floor", size="17–20 m² (excl. bathroom)",
+    bed="Double bed 180 × 200 cm, comfort height", occ="max. 2 adults", bath="shower",
+    special="The special feature: a 12 m² roof terrace, furnished in summer with a lounger and seating.", chip="12 m² roof terrace"),
+ "komfort-doppelzimmer": dict(name="Comfort Double Room", tag="Side sea view or lighthouse view", view="Side sea view or view of the lighthouse and harbour entrance", floor="1st, 2nd and 3rd floor", size="17–20 m² (excl. bathroom)",
+    bed="Double bed 180 × 200 cm, comfort height, some extra long (2.10 m)", occ="max. 2 adults", bath="shower",
+    special="Plenty of space in classic-modern boutique style – with a view of the Baltic Sea or of Warnemünde's landmark.", chip=""),
+ "doppelzimmer": dict(name="Double Room", tag="Cosy under the roof", view="Top floor with electrically adjustable roof windows", floor="3rd floor", size="15–18 m² (excl. bathroom)",
+    bed="Double bed 180 × 200 cm, comfort height", occ="max. 2 adults", bath="shower",
+    special="Individually shaped rooms with a gently sloping ceiling – snug, quiet and in the heart of Warnemünde.", chip=""),
+ "einzelzimmer": dict(name="Single Room", tag="Queen-size bed under the roof", view="Top floor with electrically adjustable roof windows", floor="3rd floor", size="15–18 m² (excl. bathroom)",
+    bed="Queen-size bed 100 × 200 cm, comfort height", occ="1–2 adults", bath="shower",
+    special="Ideal for solo travellers: individually shaped with a gently sloping ceiling and a queen-size bed.", chip=""),
+}
+COMMON_EN = ["Swivelling HD flat-screen satellite TV with radio", "USB sockets at bedside and desk", "Large desk", "2 armchairs with side tables",
+             "Large illuminated wardrobe", "In-room safe", "Heated towel rail, cosmetic mirror, hairdryer, toiletries", "Free Wi-Fi", "24-hour reception and wake-up call"]
+FAQ_EN = [
+ ("What are the check-in and check-out times?", "Your room is ready from 3 pm on the day of arrival and available until 11 am on the day of departure. The reception is staffed around the clock."),
+ ("Is breakfast included in the room rate?", "Room rates are without breakfast. You can add the breakfast buffet in our breakfast lounge, overlooking the promenade, when you book."),
+ ("Where can I park?", "Am Leuchtturm is a pedestrian zone; you may drive up to the hotel to load and unload. Afterwards, park in the Kurhaus underground garage (approx. 400 m) at the hotel guest rate of €14 per 24 hours – tickets are available at reception."),
+ ("Until when can I cancel free of charge?", "Hotel bookings can be cancelled free of charge up to 14 days before arrival, apartments up to four weeks before arrival."),
+ ("Is there a minimum stay?", "Yes, depending on the season: 2 nights at weekends in low season, 4 nights in mid season, 6 nights in high season and 5 nights over Easter, Whitsun, Ascension Day and New Year's Eve. Shorter stays can be booked at short notice, subject to availability."),
+ ("Are pets allowed?", "Out of consideration for all guests, we kindly ask you not to bring pets."),
+ ("Can I stay before or after a cruise?", "Yes. The cruise terminal in Warnemünde is within walking distance. Ask us about luggage storage and a late check-out, subject to availability."),
+ ("How do I get here by train?", "Take the S-Bahn from Rostock Hbf to Warnemünde. From the station it is about 500 metres on foot, across the station bridge and along the Alter Strom."),
+]
+FAQ_EN_LD = {"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":q,"acceptedAnswer":{"@type":"Answer","text":a}} for q,a in FAQ_EN]}
+
+def en_room_href(R, slug): return f"{R}en/rooms/{EN_SLUG[slug]}.html"
+def en_book(R, q=""): return f"{R}en/book.html" + (("?" + q) if q else "")
+
+def searchbox_en(R):
+    opts = "".join(f'<option value="{r["slug"]}">{ROOMS_EN[r["slug"]]["name"]}</option>' for r in ROOMS)
+    return f"""<form class="searchbox" id="search" autocomplete="off">
+  <div class="field"><label for="s-arr">Arrival</label><input type="date" id="s-arr" required></div>
+  <div class="field"><label for="s-dep">Departure</label><input type="date" id="s-dep" required></div>
+  <div class="field"><label for="s-ad">Guests</label><select id="s-ad"><option value="1">1 adult</option><option value="2" selected>2 adults</option></select></div>
+  <div class="field"><label for="s-room">Room</label><select id="s-room"><option value="">All rooms</option>{opts}</select></div>
+  <button class="btn btn-navy" type="submit">Check availability</button>
+</form>"""
+
+def card_en(r, R):
+    x = ROOMS_EN[r["slug"]]; p = r["prices"]
+    chips = f'<li>{e(x["view"].split(" or view of")[0])}</li><li>{e(x["size"].replace(" (excl. bathroom)",""))}</li>' + (f'<li>{e(x["chip"])}</li>' if x["chip"] else "")
+    return f"""<article class="card">
+  <a class="ph" href="{en_room_href(R, r['slug'])}"><img src="{R}img/{r['imgs'][0]}.jpg" alt="{e(x['name'])}" loading="lazy"></a>
+  <div class="bd">
+    <h3><a href="{en_room_href(R, r['slug'])}">{e(x['name'])}</a></h3>
+    <ul class="chips">{chips}</ul>
+    <div class="from">from <b>€{p[0]}</b> per night · excl. breakfast</div>
+    <div><div class="slots-h">Next available dates <span class="demo">Demo</span></div><div class="slots" data-slots="{r['slug']}"></div></div>
+    <div class="acts"><a class="btn btn-line" href="{en_room_href(R, r['slug'])}">Details</a><a class="btn btn-navy" href="{en_book(R, 'room=' + r['slug'] + '&amp;step=1')}">Book</a></div>
+  </div>
+</article>"""
+
+HOTEL_LD_EN = dict(HOTEL_LD, url=REAL+"/en/", description="Owner-run boutique hotel on the beach promenade of Warnemünde, right by the lighthouse. 30 rooms, breakfast lounge overlooking the promenade, lobby with fireplace.",
+                   priceRange="€139–339 per room and night (excl. breakfast)")
+
+def home_en():
+    R = "../"
+    cards = "".join(card_en(r, R) for r in ROOMS)
+    faq = "".join(f"<details><summary>{e(q)}</summary><p>{e(a)}</p></details>" for q,a in FAQ_EN)
+    body = f"""
+<section class="hero" style="padding:0">
+  <picture><source media="(max-width:640px)" srcset="../img/hero-vom-leuchtturm-960.jpg"><img class="hero-img" src="../img/hero-vom-leuchtturm.jpg" alt="Hotel am Leuchtturm seen from above, photographed from the Warnemünde lighthouse" fetchpriority="high"></picture>
+  <span class="hero-credit">The view from the lighthouse onto the hotel · Photo: <a href="https://commons.wikimedia.org/wiki/File:Rostock_asv2018-05_img64_Warnemuende_view_from_lighthouse.jpg">A.Savin, Wikipedia</a> · <a href="https://artlibre.org/licence/lal/en/">Free Art License</a></span>
+  <div class="hero-copy"><div class="wrap">
+    <div class="eyebrow">The view from the lighthouse onto our hotel · since 1850</div>
+    <h1 class="caps">Right by the lighthouse</h1>
+    <p>Owner-run boutique hotel with 30 rooms, a breakfast lounge overlooking the promenade and a lobby with fireplace – just steps from the fine white sand of the Baltic Sea.</p>
+  </div></div>
+</section>
+<div class="search"><div class="wrap">
+  {searchbox_en(R)}
+  <div class="perkline"><span>Best rate directly with the hotel</span><span>Free cancellation up to 14 days before arrival</span><span>Add parking when you book</span></div>
+  <div class="note" data-n="EN" style="margin-left:auto;margin-right:auto"><b>Englische Version:</b> gleiche Struktur unter /en/ mit eigenen, englischen Adressen, per hreflang mit der deutschen Seite verknüpft – für Kreuzfahrt- und internationale Gäste. Der Sprachumschalter oben springt auf die passende Seite; auf der Buchungsseite bleibt die Auswahl erhalten. Die Buchung über DIRS21 öffnet sich auf Englisch.</div>
+</div></div>
+
+<section style="padding-top:64px"><div class="wrap">
+  <div class="facts4">
+    <div><b>8.9 / 10</b><span>from 881 verified reviews (Kayak, Oct 2026)</span></div>
+    <div><b>30 rooms</b><span>six categories, plus 4 apartments</span></div>
+    <div><b>Since 1850</b><span>on historic foundations, renovated 2017</span></div>
+    <div><b>24 hours</b><span>reception at your service</span></div>
+  </div>
+</div></section>
+
+<section class="alt" id="rooms"><div class="wrap">
+  <div class="center"><div class="eyebrow">Rooms &amp; rates</div><h2 class="caps">Your room by the sea</h2><div class="rule"></div>
+  <p class="lead">Classic-modern boutique style, beds at comfort height and marble-look bathrooms. Choose your view – and book the next available date directly.</p></div>
+  <div class="cards">{cards}</div>
+  <p class="center" style="margin-top:30px"><a class="btn btn-line" href="rooms/index.html#rates">All rates &amp; conditions</a></p>
+</div></section>
+
+<section><div class="wrap split">
+  <div class="pic2"><img class="tall" src="../img/fruehstueck-1.jpg" alt="Breakfast lounge overlooking the beach promenade" loading="lazy" data-zoom><img src="../img/buffet.jpg" alt="Breakfast buffet" loading="lazy" data-zoom><img src="../img/fruehstueck-3.jpg" alt="Breakfast table" loading="lazy" data-zoom></div>
+  <div><div class="eyebrow">Breakfast lounge</div><h2 class="caps">Breakfast with a view of the promenade</h2><div class="rule"></div>
+  <p>The breakfast lounge is reserved for hotel guests: floor-to-ceiling windows, a maritime touch and a view of the bustle on the beach promenade. Simply add the buffet when you book.</p>
+  <ul class="ticks"><li>Generous breakfast buffet</li><li>Floor-to-ceiling glazing in the 2017 veranda extension</li><li>For hotel guests only</li></ul></div>
+</div></section>
+
+<section class="alt"><div class="wrap split rev">
+  <div class="pic"><img src="../img/lobby-2.jpg" alt="Lobby with glass fireplace" loading="lazy" data-zoom></div>
+  <div><div class="eyebrow">Lobby &amp; library</div><h2 class="caps">Arrive by the fireplace</h2><div class="rule"></div>
+  <p>Individual seating, a glass fireplace and a small library invite you to linger – after the beach in summer, after a walk along the wild Baltic in winter.</p>
+  <p><a class="btn btn-line" href="gallery.html">View gallery</a></p></div>
+</div></section>
+
+<div class="strip"><img src="../img/stage-4.jpg" alt="Roof terrace with beach chair and lighthouse view" loading="lazy">
+  <div class="ov"><div class="wrap"><div class="eyebrow" style="color:var(--aqua)">Panorama Terrace Double Room</div><h2 class="caps">40 m² roof terrace with beach chair</h2><p>Your private box seat above the promenade – with a direct view of the Baltic Sea and the lighthouse.</p><p><a class="btn btn-white" href="{en_room_href(R,'panorama-terrassen-doppelzimmer')}">View room</a></p></div></div></div>
+
+<section><div class="wrap">
+  <div class="center"><div class="eyebrow">Offers &amp; occasions</div><h2 class="caps">Book these dates early</h2><div class="rule"></div></div>
+  <div class="tiles">
+    <article class="tile"><img src="../img/aussen-39.jpg" alt="Hotel am Leuchtturm" loading="lazy"><div class="bd"><div class="when">All year <span class="demo">Proposal</span></div><h3>Before or after your cruise</h3><p>A night by the sea before you sail from Warnemünde – the cruise terminal is within walking distance. Ask about luggage storage and late check-out.</p><a class="btn btn-line" href="{en_book(R,'room=panorama-doppelzimmer&amp;step=1')}">Book a night</a></div></article>
+    <article class="tile"><img src="../img/lobby.jpg" alt="Lobby with fireplace" loading="lazy"><div class="bd"><div class="when">28 Oct – 20 Dec 2026</div><h3>Winter days in Warnemünde</h3><p>Hot drink by the fireplace, Comfort or Terrace Double Room, breakfast, visitor's tax and parking included – from €105 per person and night.</p><a class="btn btn-line" href="offers/winter-days-in-warnemuende.html">View offer</a></div></article>
+    <article class="tile"><img src="../img/stage-6.jpg" alt="Beach and lighthouse" loading="lazy" style="object-position:85% 50%"><div class="bd"><div class="when">August <span class="demo">Proposal</span></div><h3>Hanse Sail</h3><p>Tall ships sail into the harbour right in front of the hotel – a room facing the harbour entrance is the best seat in town.</p><a class="btn btn-line" href="#" data-toast="Proposal: a dedicated Hanse Sail page with the official dates and pre-filled booking.">Page to follow</a></div></article>
+  </div>
+</div></section>
+
+<section class="reviews"><div class="wrap">
+  <div class="score"><div class="big">8.9</div><div><h2 class="caps" style="font-size:34px">"Very good"</h2><div style="opacity:.8">from 881 verified reviews on Kayak · as of October 2026</div></div></div>
+  <div class="quotes">
+    <div class="quote">Space for a real guest review from Google or Tripadvisor – ideally one that describes the room and the view.<small>Name · source · date</small></div>
+    <div class="quote">Space for a real guest review about the breakfast lounge overlooking the promenade.<small>Name · source · date</small></div>
+    <div class="quote">Space for a real guest review about the team and the location by the lighthouse.<small>Name · source · date</small></div>
+  </div>
+</div></section>
+
+<section><div class="wrap split">
+  <div><div class="eyebrow">Apartment house by the lighthouse</div><h2 class="caps">More space, same location</h2><div class="rule"></div>
+  <p>In the listed apartment house opposite the hotel, each of the two floors has a one-room apartment (40 m²) and a two-room apartment (60 m²) – with large panoramic windows overlooking the Baltic Sea, the beach and the lighthouse.</p>
+  <ul class="ticks"><li>Kitchenette or kitchen, ideal for longer stays</li><li>Cleaning included when booking directly</li><li>Non-smoking apartments</li></ul>
+  <p style="margin-top:22px"><a class="btn btn-navy" href="apartments.html">View apartments</a></p></div>
+  <div class="pic"><img src="../img/apt-2.jpg" alt="Living area of the two-room apartment" loading="lazy" data-zoom></div>
+</div></section>
+
+<section class="alt"><div class="wrap split rev">
+  <div class="pic"><img src="../img/geschichte-1905.jpg" alt="Historic postcard: Warnemünde beach and lighthouse around 1905" loading="lazy" data-zoom></div>
+  <div><div class="eyebrow">Since 1850</div><h2 class="caps">The first hotel in town</h2><div class="rule"></div>
+  <p>In 1850 H. F. Ohlerich opened the "Hotel Pavillon" here – just as Warnemünde was becoming a seaside resort. In 1897 the lighthouse was built right in front of it. Today an owner-run hotel continues the story.</p>
+  <p><a class="btn btn-line" href="history.html">The full story</a></p></div>
+</div></section>
+
+<section id="faq"><div class="wrap narrow">
+  <div class="eyebrow">Good to know</div><h2 class="caps">Frequently asked questions</h2><div class="rule"></div>
+  {faq}
+</div></section>
+"""
+    page("en/index.html", "Hotel am Leuchtturm – boutique hotel on the beach in Warnemünde, Germany",
+         "Owner-run boutique hotel since 1850 on the beach promenade of Warnemünde, right by the lighthouse. 30 rooms with sea or lighthouse views, some with roof terrace. Close to the cruise terminal.",
+         body, lang="en", schema=[HOTEL_LD_EN, FAQ_EN_LD])
+
+def rooms_index_en():
+    R = "../../"
+    rows = "".join(f'<tr><td><a href="{EN_SLUG[r["slug"]]}.html">{e(ROOMS_EN[r["slug"]]["name"])}</a><br><small style="color:var(--muted)">{e(ROOMS_EN[r["slug"]]["view"])}</small></td>' + "".join(f'<td class="num">from €{p}</td>' for p in r["prices"]) + "</tr>" for r in ROOMS)
+    cards = "".join(card_en(r, R) for r in ROOMS)
+    body = f"""
+<div class="wrap crumbs"><a href="../index.html">Home</a> › Rooms &amp; rates</div>
+<section style="padding-top:28px"><div class="wrap">
+  <div class="eyebrow">Rooms &amp; rates</div><h1 class="caps" style="font-size:clamp(34px,4.6vw,54px)">Six categories, one view of the sea</h1><div class="rule"></div>
+  <p class="lead">After its complete renovation in 2017, the hotel welcomes you in classic-modern boutique style: light-filled rooms with and without terrace, beds at comfort height and bathrooms with the latest fittings.</p>
+  <div class="cards">{cards}</div>
+</div></section>
+<section class="alt" id="rates"><div class="wrap">
+  <div class="eyebrow">Rates 2026</div><h2 class="caps">Rates &amp; conditions</h2><div class="rule"></div>
+  <p>Daily rates in euros per room and night incl. VAT, without breakfast. Valid until a new price list is published.</p>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Room category</th><th class="num">Low season<small>5 Jan–31 Mar · 1 Nov–23 Dec</small></th><th class="num">Mid season<small>1 Apr–12 May · 4 Oct–31 Oct</small></th><th class="num">High season<small>13 May–3 Oct · 24 Dec–4 Jan</small></th></tr></thead>
+    <tbody>{rows}<tr><td>Extra bed, 3rd person</td><td class="num">€75</td><td class="num">€75</td><td class="num">€75</td></tr></tbody>
+  </table></div>
+  <div class="split" style="margin-top:40px;align-items:start;gap:40px">
+    <div><h3>Good to know</h3><ul class="ticks">
+      <li>Check-in from 3 pm, check-out until 11 am</li>
+      <li>Free cancellation up to 14 days before arrival</li>
+      <li>Payment by debit card (EC), cash or bank transfer in advance</li>
+      <li>No pets</li>
+      <li>Bicycles only by prior arrangement</li></ul></div>
+    <div><h3>Minimum stay</h3><ul class="ticks">
+      <li>Weekends in low season: 2 nights</li>
+      <li>Mid season: 4 nights</li>
+      <li>High season: 6 nights</li>
+      <li>Easter, Whitsun, Ascension Day, New Year's Eve: 5 nights</li>
+      <li>Shorter stays at short notice, subject to availability</li></ul></div>
+  </div>
+</div></section>
+"""
+    page("en/rooms/index.html", "Rooms & rates – Hotel am Leuchtturm, Warnemünde",
+         "Six room categories with sea or lighthouse views, some with roof terrace. 2026 rates from €139 per night, free cancellation up to 14 days before arrival.",
+         body, active="en/rooms/index.html", lang="en", schema=HOTEL_LD_EN)
+
+def room_page_en(r):
+    R = "../../"; x = ROOMS_EN[r["slug"]]; p = r["prices"]; slug_en = EN_SLUG[r["slug"]]
+    gal = "".join(f'<img src="{R}img/{k}.jpg" alt="{e(x["name"])} – photo {i+1}" loading="{"eager" if i==0 else "lazy"}" data-zoom>' for i,k in enumerate(r["imgs"]))
+    other = " · ".join(f'<a href="{EN_SLUG[o["slug"]]}.html">{e(ROOMS_EN[o["slug"]]["name"])}</a>' for o in ROOMS if o["slug"] != r["slug"])
+    feats = "".join(f"<li>{e(f)}</li>" for f in [x["bed"]] + COMMON_EN)
+    banner = f'<div class="strip" style="margin-top:56px"><img src="{R}img/{r["banner"]}.jpg" alt="Roof terrace with beach chair" loading="lazy"><div class="ov"><div class="wrap"><h2 class="caps">Your roof terrace</h2><p>40 m², a beach chair, two loungers – and the Baltic Sea right in front of you.</p></div></div></div>' if r["banner"] else ""
+    room_ld = {"@context":"https://schema.org","@type":"HotelRoom","name":x["name"],"description":x["special"],"bed":x["bed"],"occupancy":{"@type":"QuantitativeValue","maxValue":2},
+               "containedInPlace":{"@type":"Hotel","name":"Hotel am Leuchtturm","url":REAL+"/en/"},
+               "offers":{"@type":"Offer","priceCurrency":"EUR","price":p[0],"description":"From-rate per night, low season 2026, excl. breakfast"}}
+    body = f"""
+<div class="wrap crumbs"><a href="../index.html">Home</a> › <a href="index.html">Rooms &amp; rates</a> › {e(x['name'])}</div>
+<section style="padding-top:22px"><div class="wrap">
+  <div class="eyebrow">{e(x['tag'])}</div>
+  <h1 class="caps" style="font-size:clamp(32px,4.4vw,52px)">{e(x['name'])}</h1>
+  <div class="room-top">
+    <div>
+      <div class="gallery">{gal}</div>
+      <p style="margin-top:26px;font-size:18px">{e(x['special'])}</p>
+      <p>Spacious and comfortable in classic-modern design, furnished in boutique style with high-quality materials in light, warm tones. The elegant black-and-white marble-look bathroom has a {e(x['bath'])} and a cosmetic mirror.</p>
+      <ul class="spec">
+        <li><b>View</b>{e(x['view'])}</li><li><b>Size</b>{e(x['size'])}</li>
+        <li><b>Floor</b>{e(x['floor'])}</li><li><b>Occupancy</b>{e(x['occ'])}</li>
+        <li><b>Bathroom</b>{e(x['bath'].capitalize())}</li><li><b>Rate</b>from €{p[0]} · €{p[1]} · €{p[2]} per night (low / mid / high season), excl. breakfast</li>
+      </ul>
+      <h3 style="margin-top:34px">Room features</h3>
+      <ul class="kv">{feats}</ul>
+    </div>
+    <aside class="bookcard" data-bookcard="{r['slug']}">
+      <div class="eyebrow" style="margin:0">Book directly with the hotel</div>
+      <h3>When would you like to come?</h3>
+      <div class="grid2">
+        <div class="field"><label for="b-arr">Arrival</label><input type="date" id="b-arr"></div>
+        <div class="field"><label for="b-dep">Departure</label><input type="date" id="b-dep"></div>
+      </div>
+      <div class="field" style="margin-top:10px"><label for="b-ad">Guests</label><select id="b-ad"><option value="1">1 adult</option><option value="2" selected>2 adults</option></select></div>
+      <div class="sum" id="b-sum"></div>
+      <a class="btn btn-navy" id="b-go" href="../book.html" style="width:100%;margin-top:14px">Book this room</a>
+      <div class="slots-h" style="margin-top:14px">Next available dates <span class="demo">Demo</span></div>
+      <div class="slots" data-slots="{r['slug']}"></div>
+      <p class="slots-h" style="margin-top:12px">Free cancellation up to 14 days before arrival · Questions? <a href="tel:{TEL_HREF}">+49 381 54370</a></p>
+    </aside>
+  </div>
+</div></section>
+{banner}
+<section class="alt" style="padding:48px 0"><div class="wrap"><p style="margin:0"><b style="color:var(--navy)">Other rooms:</b> {other}</p></div></section>
+"""
+    page(f"en/rooms/{slug_en}.html", f"{x['name']} – Hotel am Leuchtturm, Warnemünde",
+         f"{x['name']} at Hotel am Leuchtturm: {x['view']}, {x['size'].replace(' (excl. bathroom)','')}, {x['floor']}. From €{p[0]} per night. Book direct.",
+         body, active="en/rooms/index.html", lang="en", schema=room_ld)
+
+def apartments_en():
+    body = """
+<div class="wrap crumbs"><a href="index.html">Home</a> › Apartment house</div>
+<section style="padding-top:22px"><div class="wrap">
+  <div class="eyebrow">Opposite the hotel · listed building</div><h1 class="caps" style="font-size:clamp(32px,4.4vw,52px)">Apartment house by the lighthouse</h1><div class="rule"></div>
+  <div class="split" style="align-items:start">
+    <div>
+      <p class="lead">On each of the two floors there is a one-room and a two-room non-smoking apartment – comfortably furnished for longer stays, with large panoramic windows overlooking the Baltic Sea, the beach and the promenade with the lighthouse.</p>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Apartment</th><th class="num">Low season</th><th class="num">Mid season</th><th class="num">High season</th></tr></thead>
+        <tbody><tr><td><b>One-room apartment</b><br><small>40 m², sea view</small></td><td class="num">€125</td><td class="num">from €155</td><td class="num">from €175</td></tr>
+        <tr><td><b>Two-room apartment</b><br><small>60 m², sea view</small></td><td class="num">from €155</td><td class="num">from €185</td><td class="num">from €215</td></tr>
+        <tr><td>Extra bed, 3rd person</td><td class="num">€50</td><td class="num">€50</td><td class="num">€50</td></tr></tbody></table></div>
+      <p class="slots-h" style="margin-top:8px">Rates per apartment and night for 2 people, excl. breakfast. <b>As currently published (2023 price list).</b></p>
+      <h3 style="margin-top:28px">One-room apartment · 40 m²</h3>
+      <p>Combined sleeping and living area with kitchenette (2-zone ceramic hob, microwave, fridge with freezer compartment); bathroom with bathtub and shower screen.</p>
+      <h3>Two-room apartment · 60 m²</h3>
+      <p>Separate bedroom, living area with a large dining table right by the panoramic window, kitchen (4-zone ceramic hob, dishwasher, microwave, fridge) and bathroom with shower.</p>
+      <ul class="ticks"><li>Cleaning included only when booking directly with the hotel</li><li>Minimum stay 3 nights in low season, longer otherwise</li><li>Free cancellation up to four weeks before arrival</li><li>No pets</li></ul>
+      <p style="margin-top:22px"><a class="btn btn-navy" href="#" data-toast="In this concept, apartments run through the same booking flow as the hotel rooms.">Enquire &amp; book</a></p>
+    </div>
+    <div class="gallery"><img src="../img/apt-haus.jpg" alt="Apartment house by the lighthouse" data-zoom><img src="../img/apt-1.jpg" alt="One-room apartment" loading="lazy" data-zoom><img src="../img/apt-2.jpg" alt="Two-room apartment living area" loading="lazy" data-zoom><img src="../img/apt-3.jpg" alt="Apartment kitchen" loading="lazy" data-zoom></div>
+  </div>
+</div></section>
+"""
+    page("en/apartments.html", "Apartment house by the lighthouse – holiday apartments with sea view, Warnemünde",
+         "Four non-smoking apartments (40 and 60 m²) in the listed house opposite Hotel am Leuchtturm, with panoramic views of the Baltic Sea and the lighthouse.",
+         body, active="en/apartments.html", lang="en", schema=HOTEL_LD_EN)
+
+def offers_en():
+    offer_ld = {"@context":"https://schema.org","@type":"Offer","name":"Winter days in Warnemünde","price":105,"priceCurrency":"EUR",
+                "description":"Per person and night in a double room: hot drink by the fireplace, Comfort or Terrace Double Room, breakfast, visitor's tax and free parking.",
+                "validFrom":"2026-10-28","validThrough":"2026-12-20","offeredBy":{"@type":"Hotel","name":"Hotel am Leuchtturm"}}
+    body = f"""
+<div class="wrap crumbs"><a href="../index.html">Home</a> › <a href="index.html">Offers</a> › Winter days in Warnemünde</div>
+<section style="padding-top:22px"><div class="wrap split" style="align-items:start">
+  <div>
+    <div class="eyebrow">Package · 28 October to 20 December 2026</div>
+    <h1 class="caps" style="font-size:clamp(32px,4.4vw,52px)">Winter days in Warnemünde</h1><div class="rule"></div>
+    <p class="lead">Discover the special charm of the Baltic Sea in winter – the contrast between the rough, roaring sea and the calm, cosy atmosphere of our hotel.</p>
+    <h3>Included in the package</h3>
+    <ul class="ticks"><li>A hot drink by our fireplace on arrival</li><li>Overnight stay in a Comfort or Terrace Double Room</li><li>Generous breakfast</li><li>Local visitor's tax</li><li>Free parking in the Kurhaus garage</li></ul>
+    <p style="margin-top:22px;font-size:18px">Per person and night in a double room <b class="fig" style="font-size:32px;color:var(--navy)">from €105</b></p>
+    <p><a class="btn btn-navy" href="{en_book('../../', 'offer=wintertage&amp;room=komfort-doppelzimmer&amp;arrival=2026-11-20&amp;departure=2026-11-22&amp;adults=2&amp;step=2')}">Book this package</a></p>
+    <p class="slots-h">Subject to availability.</p>
+  </div>
+  <div class="pic2"><img class="tall" src="../../img/lobby-2.jpg" alt="Lobby with fireplace" data-zoom><img src="../../img/kdz-1.jpg" alt="Comfort Double Room" loading="lazy" data-zoom><img src="../../img/fruehstueck-2.jpg" alt="Breakfast lounge" loading="lazy" data-zoom></div>
+</div></section>
+"""
+    page("en/offers/winter-days-in-warnemuende.html", "Winter days in Warnemünde – package at Hotel am Leuchtturm",
+         "Winter package: hot drink by the fireplace, double room, breakfast, visitor's tax and parking included, from €105 per person and night.",
+         body, active="en/offers/index.html", lang="en", schema=offer_ld)
+    body2 = f"""
+<div class="wrap crumbs"><a href="../index.html">Home</a> › Offers</div>
+<section style="padding-top:22px"><div class="wrap">
+  <div class="eyebrow">Packages &amp; occasions</div><h1 class="caps" style="font-size:clamp(32px,4.4vw,52px)">Offers</h1><div class="rule"></div>
+  <div class="tiles">
+    <article class="tile"><img src="../../img/lobby.jpg" alt="Lobby with fireplace" loading="lazy"><div class="bd"><div class="when">28 Oct – 20 Dec 2026</div><h3>Winter days in Warnemünde</h3><p>Hot drink by the fireplace, breakfast, visitor's tax and parking included – from €105 per person/night.</p><a class="btn btn-navy" href="winter-days-in-warnemuende.html">View offer</a></div></article>
+    <article class="tile"><img src="../../img/aussen-37.jpg" alt="Hotel am Leuchtturm" loading="lazy"><div class="bd"><div class="when">All year <span class="demo">Proposal</span></div><h3>Before or after your cruise</h3><p>A night by the sea, a short walk from the cruise terminal, with luggage storage and late check-out on request.</p><a class="btn btn-line" href="{en_book('../../','room=panorama-doppelzimmer&amp;step=1')}">Book a night</a></div></article>
+    <article class="tile"><img src="../../img/stage-4.jpg" alt="Roof terrace" loading="lazy"><div class="bd"><div class="when">August <span class="demo">Proposal</span></div><h3>Hanse Sail from your room</h3><p>A dedicated page with the official dates and rooms overlooking the harbour entrance.</p><a class="btn btn-line" href="#" data-toast="Proposal for a new offer page.">Page to follow</a></div></article>
+  </div>
+</div></section>
+"""
+    page("en/offers/index.html", "Offers & packages – Hotel am Leuchtturm, Warnemünde",
+         "Packages at Hotel am Leuchtturm in Warnemünde, e.g. Winter days in Warnemünde from €105 per person and night.",
+         body2, active="en/offers/index.html", lang="en", schema=HOTEL_LD_EN)
+
+def history_en():
+    steps = [("1850","H. F. Ohlerich builds the single-storey \"Hotel Pavillon\" as Warnemünde begins to develop into a seaside resort – the first hotel in town."),
+             ("~1880","Almost 30 years later the building is extended to three storeys."),
+             ("1897","The lighthouse – Warnemünde's landmark – is built right in front of the hotel."),
+             ("until 1920","The spa garden lies in front of the hotel, a popular destination. The ground floor houses a restaurant, and the beach hall is a popular dance venue."),
+             ("1950","The last owner, Elisabeth Colas, is expropriated in \"Aktion Rose\". The hotel is renamed \"Meer des Friedens\" (Sea of Peace)."),
+             ("after 1989","The hotel is returned to Ms Colas, who leaves it to a parish."),
+             ("1996","Extension from 20 to 30 rooms; the first floor gets a wraparound roof terrace."),
+             ("2013","Last change of ownership – the name \"Hotel am Leuchtturm\" is kept."),
+             ("2017","Complete renovation and veranda extension with new reception, lobby with fireplace and a breakfast lounge overlooking the promenade.")]
+    tl = "".join(f"<li><b>{y}</b><p style='margin:0'>{e(t)}</p></li>" for y,t in steps)
+    body = f"""
+<div class="wrap crumbs"><a href="index.html">Home</a> › History</div>
+<section style="padding-top:22px"><div class="wrap split" style="align-items:start">
+  <div><div class="eyebrow">A hotel since 1850</div><h1 class="caps" style="font-size:clamp(32px,4.4vw,52px)">How it all began</h1><div class="rule"></div>
+  <p class="lead">Today's Hotel am Leuchtturm stands on foundations from 1850 – and has witnessed more than 170 years of Warnemünde history.</p>
+  <ol class="timeline">{tl}</ol></div>
+  <div><div class="pic"><img src="../img/geschichte-1905.jpg" alt="Beach life in Warnemünde around 1900" data-zoom></div><p class="slots-h" style="margin-top:8px">Beach life around 1900 – historic postcard</p>
+  <div class="pic" style="margin-top:22px"><img src="../img/aussen-37.jpg" alt="The hotel today" loading="lazy" data-zoom></div><p class="slots-h" style="margin-top:8px">The hotel today, after the 2017 renovation</p></div>
+</div></section>
+"""
+    page("en/history.html", "History since 1850 – Hotel am Leuchtturm, Warnemünde",
+         "From Hotel Pavillon in 1850 to Hotel am Leuchtturm: the story of the first hotel in Warnemünde.", body, active="en/history.html", lang="en", schema=HOTEL_LD_EN)
+
+def location_en():
+    body = """
+<div class="wrap crumbs"><a href="index.html">Home</a> › Location &amp; directions</div>
+<section style="padding-top:22px"><div class="wrap split" style="align-items:start">
+  <div><div class="eyebrow">Am Leuchtturm 16 · 18119 Rostock-Warnemünde · Germany</div><h1 class="caps" style="font-size:clamp(32px,4.4vw,52px)">Location &amp; directions</h1><div class="rule"></div>
+  <p class="lead">Right on the beach promenade, opposite the lighthouse – the beach, the Alter Strom and the station are all within walking distance.</p>
+  <h3 style="margin-top:26px">By train</h3>
+  <p>Take an intercity train to Rostock Hbf, then the S-Bahn to Warnemünde. From the station, cross the station bridge and walk along the Alter Strom: about 500 m to the hotel.</p>
+  <h3>By cruise ship</h3>
+  <p>The Warnemünde cruise terminal is within walking distance along the Alter Strom. We are happy to store your luggage.</p>
+  <h3>By car</h3>
+  <p><b>From Berlin:</b> A19 to the end, through the Warnow tunnel (toll) to Lütten Klein, then B 103 to Warnemünde.<br><b>From Hamburg:</b> A1 to the Lübeck junction, A20 towards Rostock, exit Rostock-West, B 103 to Warnemünde.</p>
+  <h3>Parking</h3>
+  <p>Since 2018 Am Leuchtturm has been a pedestrian zone. You may drive up to the hotel to load and unload. Afterwards, park in the <b>Kurhaus underground garage</b> (approx. 400 m, on the promenade) at the hotel guest rate of <b>€14 per 24 hours</b>.</p>
+  <h3>By plane</h3>
+  <p>Rostock-Laage airport. For a shuttle to the hotel, please contact us: <a href="tel:+4938154370">+49 381 54370</a>.</p></div>
+  <div><iframe title="Map: Hotel am Leuchtturm, Warnemünde" style="width:100%;aspect-ratio:4/5;border:0;border-radius:10px;box-shadow:var(--shadow)" loading="lazy" src="https://www.openstreetmap.org/export/embed.html?bbox=12.0760%2C54.1770%2C12.0950%2C54.1850&amp;layer=mapnik&amp;marker=54.1814%2C12.0862"></iframe>
+  <p class="slots-h" style="margin-top:8px">Map © OpenStreetMap contributors · marker approximate</p></div>
+</div></section>
+"""
+    page("en/location.html", "Location & directions – Hotel am Leuchtturm, Warnemünde",
+         "Directions to Hotel am Leuchtturm in Warnemünde by train, cruise ship, car and plane. Parking in the Kurhaus garage for €14 per 24 hours.",
+         body, active="en/location.html", lang="en", schema=HOTEL_LD_EN)
+
+def gallery_en():
+    keys = ["aussen-37","ptdz-5","fruehstueck-1","lobby-2","pdz-4","tdz-3","buffet","kdz-1","bad","stage-4","pdz-1","fruehstueck-2","collage-3","kdz-2","dz-4","ez-1","lobby","fruehstueck-3","collage-1","tdz-1","apt-2","ptdz-2","collage-2","aussen-39"]
+    imgs = "".join(f'<img src="../img/{k}.jpg" alt="Hotel am Leuchtturm – photo" loading="lazy" data-zoom>' for k in keys)
+    body = f"""
+<div class="wrap crumbs"><a href="index.html">Home</a> › Gallery</div>
+<section style="padding-top:22px"><div class="wrap"><div class="eyebrow">Photo gallery</div><h1 class="caps" style="font-size:clamp(32px,4.4vw,52px)">Impressions</h1><div class="rule"></div>
+<div class="masonry">{imgs}</div></div></section>
+"""
+    page("en/gallery.html", "Gallery – Hotel am Leuchtturm, Warnemünde", "Photos of Hotel am Leuchtturm: rooms, breakfast lounge, lobby with fireplace, roof terrace and views of the Baltic Sea and the lighthouse.", body, lang="en", schema=HOTEL_LD_EN)
+
+def booking_en():
+    body = """
+<div class="wrap crumbs"><a href="index.html">Home</a> › Book online</div>
+<section style="padding-top:22px" id="booking"><div class="wrap">
+  <div class="eyebrow">Directly with the hotel · best rate</div><h1 class="caps" style="font-size:clamp(30px,4vw,46px)">Book online</h1>
+  <form class="searchbox" id="k-form" style="margin-top:22px;box-shadow:none;border:1px solid var(--line)">
+    <div class="field"><label for="k-arr">Arrival</label><input type="date" id="k-arr"></div>
+    <div class="field"><label for="k-dep">Departure</label><input type="date" id="k-dep"></div>
+    <div class="field"><label for="k-ad">Guests</label><select id="k-ad"><option value="1">1 adult</option><option value="2">2 adults</option></select></div>
+    <div></div>
+    <button class="btn btn-line" type="submit">Change dates</button>
+  </form>
+  <nav class="stepper" id="stepper" aria-label="Booking steps"><a href="#">1 · Room</a><a href="#">2 · Rate</a><a href="#">3 · Extras</a><a href="#">4 · Summary</a></nav>
+  <div class="bk"><div id="step"></div><aside class="summary" id="summary"></aside></div>
+</div></section>
+"""
+    page("en/book.html", "Book online – Hotel am Leuchtturm, Warnemünde", "Book a room at Hotel am Leuchtturm directly with the hotel – with total price, extras and a shareable booking link.", body, mbar=True, mbar_href="#step", lang="en")
+
+def build_en():
+    home_en(); rooms_index_en(); [room_page_en(r) for r in ROOMS]; apartments_en(); offers_en(); history_en(); location_en(); gallery_en(); booking_en()
+
+
 if __name__ == "__main__":
     home(); rooms_index(); [room_page(r) for r in ROOMS]; apartments(); offers(); history(); location(); gallery(); booking(); imprint(); tech(); hosting()
+    build_en()
     print("ok")

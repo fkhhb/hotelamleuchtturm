@@ -17,9 +17,10 @@ A clickable concept for a new website for [Hotel am Leuchtturm](https://www.hote
 | Apartments | `apartments.html` | Apartment house incl. the (outdated) 2023 prices, flagged |
 | Offer | `angebote/wintertage-in-warnemuende.html` | Real winter package, button opens booking pre-filled |
 | History, location, gallery | `geschichte.html`, `lage-anfahrt.html`, `galerie.html` | Timeline since 1850, directions and parking, photo gallery with lightbox |
+| English version | `en/` | All guest-facing pages in English with English URLs (e.g. `/en/rooms/panorama-terrace-double-room`), hreflang-linked to the German pages. The DE / EN switch jumps to the matching page and keeps the booking selection. DIRS21 hand-off opens in English |
 | Tech package | `vorschlag/` | For the hotel's web agency: `sitemap.xml`, `robots.txt`, `llms.txt`, `schema-hotel.json`, 301 redirects (`.htaccess` + CSV), list of issues found |
 
-Yellow numbered notes explain which recommendation each element demonstrates. Visitors can hide them with the button in the top banner.
+Yellow numbered notes explain which recommendation each element demonstrates. They are addressed to the hotel and stay German, also on the English pages. Visitors can hide them with the button in the top banner.
 
 ## Key findings from the live site (30 Oct 2026)
 
@@ -49,7 +50,7 @@ Demo values live at the top of `assets/site.js` (`BREAKFAST`, `KURTAXE`, `SAVER`
 index.html, buchen.html, …   generated pages (do not edit by hand)
 zimmer/, angebote/, vorschlag/
 assets/site.css               styles (hotel colours: navy #00284b, sea #376f8d, aqua #a6d9e2)
-assets/site.js                room data, prices, booking logic, URL state
+assets/site.js                room data, prices, booking logic, URL state, DE/EN texts
 img/                          photos © Hotel am Leuchtturm, logo, favicon
 quelle/build_site.py          page generator (not deployed)
 vercel.json                   clean URLs + X-Robots-Tag: noindex
@@ -58,7 +59,7 @@ robots.txt                    Disallow: / (concept must not be indexed)
 
 ## Editing
 
-Pages are generated. Change texts, rooms or the tech package in `quelle/build_site.py`, then rebuild:
+Pages are generated, German and English. Change texts, rooms or the tech package in `quelle/build_site.py` (English pages: the section after `# Englische Version`), then rebuild:
 
 ```bash
 python3 quelle/build_site.py
