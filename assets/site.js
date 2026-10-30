@@ -33,7 +33,7 @@ const ROOMS = [
 ];
 const L = r => r[EN ? "en" : "de"];
 const PARKING = 14;           // echt: Vorzugspreis Tiefgarage Kurhaus pro 24 h
-const BREAKFAST = 22;         // Demo
+const BREAKFAST = 20;         // Demo – einziger veröffentlichter Wert: englische Preisliste (alt), 20 € p. P.
 const KURTAXE = 3;            // Demo
 const SAVER = 0.10;           // Vorschlag
 const EXTRAS = [
@@ -136,12 +136,25 @@ function season(s){
   if (md <= "10-31") return "Z";
   return "N";
 }
+/* Ostersonntag (Gauß/Meeus) – für Ostern, Himmelfahrt und Pfingsten */
+function easter(y){
+  const a=y%19, b=Math.floor(y/100), c=y%100, d=Math.floor(b/4), e=b%4, f=Math.floor((b+8)/25), g=Math.floor((b-f+1)/3),
+        h=(19*a+b-d-g+15)%30, i=Math.floor(c/4), k=c%4, l=(32+2*e+2*i-h-k)%7, m=Math.floor((a+11*h+22*l)/451),
+        mo=Math.floor((h+l-7*m+114)/31), da=((h+l-7*m+114)%31)+1;
+  return new Date(Date.UTC(y, mo-1, da));
+}
+/* Anreise an Feiertagswochenenden: Ostern (Karfreitag–Ostermontag), Himmelfahrt (Do–So), Pfingsten (Fr–Mo), Silvester (29.–31.12.) */
+function holiday(a){
+  const d = D(a), md = a.slice(5), off = Math.floor((d - easter(d.getUTCFullYear())) / 864e5);
+  const within = (from, to) => off >= from && off <= to;
+  return within(-2, 1) || within(39, 42) || within(47, 50) || (md >= "12-29" && md <= "12-31");
+}
+/* Mindestaufenthalt laut Preisliste 2026 */
 function minStay(a){
   const s = season(a), wd = D(a).getUTCDay();
-  if (s === "H") return 6;
-  if (s === "Z") return 4;
-  if (s === "N" && (wd === 5 || wd === 6)) return 2;
-  return 1;
+  let ms = s === "H" ? 6 : s === "Z" ? 4 : (wd === 5 || wd === 6) ? 2 : 1;
+  if (holiday(a)) ms = Math.max(ms, 5);
+  return ms;
 }
 /* Demo-Verfügbarkeit: deterministisch je Zimmer und Nacht */
 function freeNight(r, s){ let h=0; const k=r.slug+s; for (let i=0;i<k.length;i++) h=(h*31+k.charCodeAt(i))>>>0; return h % 6 !== 0; }

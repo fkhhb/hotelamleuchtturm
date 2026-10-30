@@ -38,7 +38,8 @@ ROOMS = [
  dict(slug="einzelzimmer", old="hotel-zimmer/einzelzimmer.html", name="Einzelzimmer",
       tag="Queensize-Bett unter dem Dach", view="Dachgeschoss mit elektrisch verstellbaren Dachfenstern", floor="3. Etage", size="15–18 m² (ohne Bad)",
       bed="Queensize-Bett 100 × 200 cm, Komforthöhe", occ="1–2 Erwachsene", bath="Dusche", prices=(139,159,199), imgs=["ez-1","ez-2","ez-4","ez-3"],
-      special="Ideal für Alleinreisende: individuell geschnitten mit leichter Dachschräge und Queensize-Bett.", banner=None),
+      special="Ideal für Alleinreisende: individuell geschnitten mit leichter Dachschräge und Queensize-Bett.", banner=None,
+      warn="Bitte prüfen: Die heutige Zimmerseite nennt ein „Queensize-Bett (100 × 200 cm)“ und „1–2 Erwachsene“. 100 cm ist ein Einzelbett, ein Queensize-Bett hat 140–160 cm. Bettbreite und Belegung klären – die Angaben hier sind 1 : 1 übernommen."),
 ]
 COMMON = ["Schwenkbarer HD-Flatscreen-Sat-TV mit Radio", "USB-Steckdosen an Nachttisch und Schreibtisch", "Großer Schreibtisch", "2 Sessel mit Beistelltischchen",
           "Großer beleuchteter Kleiderschrank", "Zimmersafe", "Beheizter Handtuchhalter, Kosmetikspiegel, Föhn, Pflegeprodukte", "Kostenloses WLAN",
@@ -225,7 +226,7 @@ def home():
 
 <section style="padding-top:64px"><div class="wrap">
   <div class="facts4">
-    <div><b>8,9 / 10</b><span>aus 881 verifizierten Bewertungen (Kayak, Okt. 2026)</span></div>
+    <div><b>91 %</b><span>„Sehr zufrieden“ – 1.563 Bewertungen (Okt. 2026)</span></div>
     <div><b>30 Zimmer</b><span>sechs Kategorien, dazu 4 Apartments</span></div>
     <div><b>Seit 1850</b><span>auf historischen Grundmauern, 2017 saniert</span></div>
     <div><b>24 Stunden</b><span>Rezeption für Sie da</span></div>
@@ -271,7 +272,7 @@ def home():
 </div></section>
 
 <section class="reviews"><div class="wrap">
-  <div class="score"><div class="big">8,9</div><div><h2 class="caps" style="font-size:34px">„Sehr gut“</h2><div style="opacity:.8">aus 881 verifizierten Bewertungen auf Kayak · Stand Oktober 2026</div></div></div>
+  <div class="score"><div class="big">91 %</div><div><h2 class="caps" style="font-size:34px">„Sehr zufrieden“</h2><div style="opacity:.8">aus 1.563 Bewertungen auf 10 Portalen (Customer Alliance) · Stand Oktober 2026</div></div></div>
   <div class="quotes">
     <div class="quote">Platz für ein echtes Gästezitat von Google oder HolidayCheck – am besten eines, das Zimmer und Ausblick konkret beschreibt.<small>Name · Quelle · Datum</small></div>
     <div class="quote">Platz für ein echtes Gästezitat zur Frühstückslounge mit Blick auf die Promenade.<small>Name · Quelle · Datum</small></div>
@@ -291,7 +292,7 @@ def home():
 <section class="alt"><div class="wrap split rev">
   <div class="pic"><img src="img/geschichte-1905.jpg" alt="Historische Postkarte: Strand von Warnemünde mit Leuchtturm um 1905" loading="lazy" data-zoom></div>
   <div><div class="eyebrow">Seit 1850</div><h2 class="caps">Das erste Hotel am Platze</h2><div class="rule"></div>
-  <p>1850 eröffnete H. F. Ohlerich hier das „Hotel Pavillon“ – als Warnemünde gerade zum Badeort wurde. 1897 entstand direkt davor der Leuchtturm. Heute führt ein inhabergeführtes Haus die Geschichte fort.</p>
+  <p>1850 errichtete H. F. Ohlerich hier das „Hotel Pavillon“ – als Warnemünde gerade zum Badeort wurde. 1897 entstand direkt davor der Leuchtturm. Heute führt ein inhabergeführtes Haus die Geschichte fort.</p>
   <p><a class="btn btn-line" href="geschichte.html">Die ganze Geschichte</a></p></div>
 </div></section>
 
@@ -376,6 +377,7 @@ def room_page(r):
       <h3 style="margin-top:34px">Ausstattung</h3>
       <ul class="kv">{feats}</ul>
       <div class="note" data-n="2"><b>Fakten als Text:</b> Größe, Etage, Ausblick und Preis stehen oben in einer Übersicht – nicht nur im Fließtext. Genau diese Angaben vergleichen Gäste und KI-Assistenten. Die Adresse ist sprechend: /zimmer/{r['slug']} statt /{r['old'].split('/')[-1]}.</div>
+      {('<div class="note" data-n="3"><b>Widerspruch:</b> ' + e(r['warn'][len('Bitte prüfen: '):]) + '</div>') if r.get('warn') else ''}
     </div>
     <aside class="bookcard" data-bookcard="{r['slug']}">
       <div class="eyebrow" style="margin:0">Direkt beim Hotel buchen</div>
@@ -594,6 +596,48 @@ def en_url(new):
     if new.startswith("/zimmer/") and new != "/zimmer/": return "/en/rooms/" + EN_SLUG[new.split("/")[2]] + "/"
     return EN_URL[new]
 
+# ---------------- Prüfbericht: Widersprüche auf der heutigen Website ----------------
+# (Thema, Stelle A, Stelle B, Empfehlung, Stand im Entwurf) – geprüft am 30.10.2026
+PRUEF = [
+ ("Website ↔ Buchungssystem DIRS21", [
+  ("Zimmernamen", "Website: 6 Kategorien, u. a. „Komfort-Doppelzimmer“", "DIRS21: 8 Zimmertypen, kein „Komfort“, dafür „Doppelzimmer, Blick auf Leuchtturm“ und „Doppelzimmer, mit seitlichem Ostseeblick“; Terrassen-DZ in zwei Typen geteilt; Apartments heißen „Einraum/Zweiraum“", "Überall dieselben Namen verwenden – Gäste und KI-Assistenten müssen das gebuchte Zimmer wiedererkennen", "Entwurf nutzt die Namen der Website"),
+  ("Panorama-Terrassen-Doppelzimmer", "Website: das Aushängeschild (40 m² Dachterrasse)", "DIRS21: in keinem von 8 getesteten Zeiträumen (Nov. 2026 – Sep. 2027) angeboten", "Klären: nicht online buchbar oder immer ausgebucht? Falls nur telefonisch: auf der Zimmerseite so sagen", "offen"),
+  ("Preise", "Preisliste 2026: Doppelzimmer ab 179 €, Einzelzimmer ab 139 € (Nebensaison)", "DIRS21 10.–12.11.2026: Doppelzimmer 165 €, Einzelzimmer 115 €; April 2027 Nebensaison-Preise, obwohl die Preisliste April als Zwischensaison führt. Hauptsaison Juli 2027 stimmt überein", "Preisliste und Buchungssystem abgleichen; „ab“-Preise sollten der niedrigste buchbare Preis sein", "offen"),
+  ("Mindestaufenthalt", "Preisliste: Hauptsaison 6 Nächte, Ostern/Pfingsten 5 Nächte", "DIRS21 bietet 12.–14.07.2027 (2 Nächte) und Ostern 26.–28.03.2027 (2 Nächte) an", "Entweder Regel im Buchungssystem hinterlegen oder auf der Website streichen", "Entwurf zeigt die Regel der Preisliste als Hinweis"),
+  ("Minibar", "Deutsche Website: keine Minibar erwähnt", "DIRS21 (und englische Website): Minibar bei allen Zimmern", "Klären und einheitlich angeben", "offen"),
+ ]),
+ ("Deutsche ↔ englische Website", [
+  ("Preise", "Deutsch: Preisliste 2026 (z. B. Einzelzimmer ab 139 €, Aufbettung 75 €)", "Englisch: alte Liste mit Saisons bis „06.01.24“ (Einzelzimmer ab 135 €, Aufbettung 50 €)", "Englische Preisseite ersetzen", "Entwurf: beide Sprachen mit Preisen 2026"),
+  ("Stornierung", "Deutsch: bis 14 Tage vor Anreise kostenfrei", "Englisch: bis vier Wochen vor Anreise", "Eine Frist für beide Sprachen", "Entwurf: 14 Tage (Hotel), vier Wochen (Apartments)"),
+  ("Mindestaufenthalt", "Deutsch: Wochenende Nebensaison 2, Zwischensaison 4, Hauptsaison 6, Feiertage 5 Nächte", "Englisch: Wochenende 2, Ostern/Pfingsten/Himmelfahrt 3, Silvester 5, Hanse Sail 7 Nächte", "Eine Regel für beide Sprachen", "Entwurf: deutsche Regel in beiden Sprachen"),
+  ("Parken", "Deutsch: seit 2018 Fußgängerzone, keine Stellplätze am Hotel", "Englisch: „public parking places at the hotel are available“", "Englischen Text korrigieren – Gäste fahren sonst ins Leere", "Entwurf: deutsche Angabe in beiden Sprachen"),
+  ("Kinder und Frühstück", "Deutsch: keine Kinderpreise, kein Frühstückspreis", "Englisch: Kinder bis 4 Jahre frei, bis 14 Jahre 17,50 €; Frühstück 20 € p. P.", "Gültige Werte bestätigen und in beiden Sprachen nennen", "Entwurf: Frühstück 20 € als Demo-Wert"),
+  ("Ausstattung", "Deutsch: keine Minibar, kein Wäscheservice", "Englisch: Minibar, Wäscheservice, Kissenmenü, Bademäntel", "Klären und angleichen", "offen"),
+  ("Apartments", "Deutsch: Reinigung alle 3 bzw. 4 Tage, ohne Frühstück, Mindestaufenthalt 3 Nächte", "Englisch: Reinigung alle 2 Tage, Frühstück bei Direktbuchung inklusive, Mindestaufenthalt 2 Nächte", "Eine Fassung für beide Sprachen", "Entwurf: „Reinigung bei Direktbuchung inklusive“ ohne Rhythmus"),
+ ]),
+ ("Innerhalb der deutschen Website", [
+  ("Gründungsjahr", "Geschichte: „Grundmauern aus dem Jahr 1850“, „mehr als 150-jährige Geschichte“", "Lage & Anfahrt: „1851 errichtet“", "Eine Jahreszahl wählen; „mehr als 175 Jahre“", "Entwurf: 1850, „mehr als 170 Jahre“"),
+  ("Einzelzimmer", "„Queensize-Bett“", "„(100 cm × 200 cm)“ – das ist ein Einzelbett – und „Belegung 1–2 Erwachsene“", "Bettbreite und Belegung klären", "im Entwurf markiert"),
+  ("Dritte Person", "Zimmerseiten: „Belegung max. 2 Erwachsene“", "Preisliste: „Aufbettung 3. Person 75 €“", "Sagen, in welchen Zimmern eine Aufbettung möglich ist", "im Entwurf markiert"),
+  ("Apartments", "Preise „2023“, Hauptsaison bis „06.01.25“; Reinigung „4-Tages-Rhythmus“", "Reinigung „3-Tages-Rhythmus“ im selben Text; DIRS21: 2-Raum-Apartment Hauptsaison 205 € statt 215 €", "Preise 2026/27 veröffentlichen, eine Reinigungsangabe", "im Entwurf markiert"),
+  ("Tiefgarage", "Lage & Anfahrt: „Tiefgarage Kurhaus“", "Winter-Arrangement: „Tiefgarage Kurhausgarten“", "Einen Namen verwenden", "Entwurf: „Tiefgarage Kurhaus“"),
+  ("Leere Seite", "Menü: „Partnerseiten“", "Die Seite hat keinen Inhalt", "Füllen oder aus dem Menü nehmen", "Entwurf: entfällt"),
+  ("Tippfehler", "„Preie &amp; Konditionen“ (Seitentitel in Google), „Onlinebuchnung“, „Frühstücklounge“", "„Intension“, „wiederspiegelt“ (Hotel &amp; Zimmer)", "Korrigieren", "Entwurf: korrigiert"),
+ ]),
+]
+
+def pruefbericht():
+    blocks = ""
+    for title, rows in PRUEF:
+        tr = "".join(f'<tr><td><b>{t}</b></td><td data-l="Hier steht">{a}</td><td data-l="Dort steht">{b}</td><td data-l="Empfehlung">{r}</td><td data-l="Im Entwurf">{st}</td></tr>' for t,a,b,r,st in rows)
+        blocks += f'<h3 style="margin-top:30px">{title}</h3><div class="table-wrap"><table class="pruef"><thead><tr><th>Thema</th><th>Hier steht</th><th>Dort steht</th><th>Empfehlung</th><th>Im Entwurf</th></tr></thead><tbody>{tr}</tbody></table></div>'
+    return f"""<section class="alt" id="pruefbericht"><div class="wrap">
+  <h2 class="caps">Prüfbericht: Widersprüche</h2><div class="rule"></div>
+  <p class="lead">Abgleich der deutschen und englischen Website mit dem Buchungssystem DIRS21 am 30.10.2026. Jeder Punkt ist eine Frage, die Gäste, Google und KI-Assistenten heute unterschiedlich beantwortet bekommen.</p>
+  {blocks}
+  <p class="slots-h" style="margin-top:16px">DIRS21 abgefragt für 2 Erwachsene (Einzelzimmer: 1 Erwachsener) in den Zeiträumen 10.–12.11. und 13.–15.11.2026, 26.–28.03., 12.–16.04., 07.–14.06., 12.–14.07., 12.–18.07. und 06.–13.09.2027. Preise pro Nacht laut Ergebnisliste.</p>
+</div></section>"""
+
 def tech():
     V = os.path.join(OUT, "vorschlag"); os.makedirs(V, exist_ok=True)
     # sitemap.xml
@@ -704,7 +748,7 @@ Mindestaufenthalt: Wochenende Nebensaison 2 Nächte, Zwischensaison 4, Hauptsais
     <article class="tile"><div class="bd"><div class="when">Neu · fehlt heute (404)</div><h3>llms.txt</h3><p>Kurzporträt für KI-Assistenten: Zimmer, Preise 2026, Konditionen, Anfahrt und Buchungslink-Format.</p><a class="btn btn-line" href="llms.txt">Ansehen</a></div></article>
     <article class="tile"><div class="bd"><div class="when">Strukturierte Daten</div><h3>schema-hotel.json</h3><p>schema.org „Hotel“ mit Adresse, Zeiten, Ausstattung, Zimmern und ab-Preisen – als JSON-LD in die Startseite einbauen.</p><a class="btn btn-line" href="schema-hotel.json">Ansehen</a></div></article>
     <article class="tile"><div class="bd"><div class="when">Umzug ohne Ranking-Verlust</div><h3>301-Weiterleitungen</h3><p>Alle alten Adressen auf die neuen – als .htaccess-Zeilen (der Server läuft auf Apache) und als Tabelle.</p><a class="btn btn-line" href="weiterleitungen.htaccess.txt">.htaccess</a> <a class="btn btn-line" href="weiterleitungen.csv" style="margin-top:8px">CSV</a></div></article>
-    <article class="tile"><div class="bd"><div class="when">Buchungssystem</div><h3>DIRS21 als Link statt Fenster</h3><p>Heute öffnet <code>d21_api.ibe.open()</code> die Buchung als Overlay – die Adresse ändert sich nie. Dabei funktioniert ein direkter Link bereits (getestet 30.10.2026):</p><p><code style="font-size:12.5px;overflow-wrap:anywhere">reservation.one.dirs21.de/hotel-am-leuchtturmde?range=2027-05-14,2027-05-17&amp;culture=de-DE&amp;show_results=true</code></p><p>Die Buchungs-Buttons sollten auf diesen Link führen (neues Fenster oder eigene Seite /buchen/) – dann funktioniert die Buchung auch ohne Cookie-Zustimmung.</p><a class="btn btn-line" href="https://reservation.one.dirs21.de/hotel-am-leuchtturmde?range=2027-05-14,2027-05-17&amp;culture=de-DE&amp;show_results=true" target="_blank" rel="noopener">Link testen ↗</a></div></article>
+    <article class="tile"><div class="bd"><div class="when">Buchungssystem</div><h3>DIRS21 als Link statt Fenster</h3><p>Heute öffnet <code>d21_api.ibe.open()</code> die Buchung als Overlay – die Adresse ändert sich nie. Dabei funktioniert ein direkter Link bereits (getestet 30.10.2026):</p><p><code style="font-size:12.5px;overflow-wrap:anywhere">reservation.one.dirs21.de/hotel-am-leuchtturmde?range=2027-05-14,2027-05-17&amp;culture=de-DE&amp;show_results=true</code></p><p>Die Buchungs-Buttons sollten auf diesen Link führen (neues Fenster oder eigene Seite /buchen/) – dann ist jede Suche teilbar und verlinkbar.</p><a class="btn btn-line" href="https://reservation.one.dirs21.de/hotel-am-leuchtturmde?range=2027-05-14,2027-05-17&amp;culture=de-DE&amp;show_results=true" target="_blank" rel="noopener">Link testen ↗</a></div></article>
   </div>
 </div></section>
 <section class="alt"><div class="wrap">
@@ -716,18 +760,16 @@ Mindestaufenthalt: Wochenende Nebensaison 2 Nächte, Zwischensaison 4, Hauptsais
 <section><div class="wrap narrow">
   <h2 class="caps">Gefunden auf der heutigen Website</h2><div class="rule"></div>
   <ul class="ticks">
-    <li><b>Wer Cookies ablehnt, kann nicht buchen:</b> Das DIRS21-Skript lädt erst nach Zustimmung; ohne Zustimmung passiert beim Klick auf „Buchen“ nichts (Fehler <code>d21_api is not defined</code>). Getestet am 30.10.2026.</li>
+    <li><b>Zwei Cookie-Abfragen hintereinander:</b> Nach der Abfrage der Website fragt das Buchungsfenster (DIRS21) ein zweites Mal. Die Buchung funktioniert mit beiden Antworten (getestet 30.10.2026 nachmittags), jede Abfrage ist aber ein möglicher Abbruchpunkt.</li>
     <li>Server meldet PHP 5.6.40 / 5.4.45 und OpenSSL 1.0.2 – alles ohne Sicherheitsupdates (5.6.40 ist die letzte PHP-5-Version, 2019). Die Seite war am 30.10.2026 mehrere Stunden komplett ausgefallen (Fehler 500); danach waren die PHP-Versionen andere als vorher.</li>
     <li>Nicht vorhandene Seiten leiten per 302 auf die Startseite um statt „404 nicht gefunden“ zu melden – Suchmaschinen und KI-Agenten sehen tote Links als gültig.</li>
     <li>Keine robots.txt, keine sitemap.xml, keine llms.txt.</li>
     <li>Buchung als Overlay (DIRS21) ohne eigene Adresse – nicht teilbar, nicht verlinkbar.</li>
-    <li>Apartment-Seite zeigt Preise von 2023; Reinigung einmal „4-Tages-“, einmal „3-Tages-Rhythmus“.</li>
-    <li>Zimmerseiten: „max. 2 Erwachsene“ – Preisliste: „Aufbettung 3. Person“.</li>
-    <li>Geschichte: „1850“ – Anfahrt: „1851 errichtet“.</li>
-    <li>Seitentitel „Preie &amp; Konditionen“ (Tippfehler) erscheint so in Google.</li>
+    <li>Inhaltliche Widersprüche: siehe <a href="#pruefbericht">Prüfbericht</a> unten.</li>
     <li>Bewertungen nur als Grafik-Link, Fotos ohne Beschreibung und mit technischen Dateinamen.</li>
   </ul>
 </div></section>
+""" + pruefbericht() + """
 """
     page("vorschlag/index.html", "Technik-Paket – Konzeptentwurf Hotel am Leuchtturm", "Sitemap, robots.txt, llms.txt, strukturierte Daten und 301-Weiterleitungen für hotel-am-leuchtturm.de.", body, mbar=False)
 
@@ -830,7 +872,7 @@ def home_en():
 
 <section style="padding-top:64px"><div class="wrap">
   <div class="facts4">
-    <div><b>8.9 / 10</b><span>from 881 verified reviews (Kayak, Oct 2026)</span></div>
+    <div><b>91 %</b><span>"Very satisfied" – 1,563 reviews (Oct 2026)</span></div>
     <div><b>30 rooms</b><span>six categories, plus 4 apartments</span></div>
     <div><b>Since 1850</b><span>on historic foundations, renovated 2017</span></div>
     <div><b>24 hours</b><span>reception at your service</span></div>
@@ -874,7 +916,7 @@ def home_en():
 </div></section>
 
 <section class="reviews"><div class="wrap">
-  <div class="score"><div class="big">8.9</div><div><h2 class="caps" style="font-size:34px">"Very good"</h2><div style="opacity:.8">from 881 verified reviews on Kayak · as of October 2026</div></div></div>
+  <div class="score"><div class="big">91 %</div><div><h2 class="caps" style="font-size:34px">"Very satisfied"</h2><div style="opacity:.8">from 1,563 reviews on 10 portals (Customer Alliance) · as of October 2026</div></div></div>
   <div class="quotes">
     <div class="quote">Space for a real guest review from Google or Tripadvisor – ideally one that describes the room and the view.<small>Name · source · date</small></div>
     <div class="quote">Space for a real guest review about the breakfast lounge overlooking the promenade.<small>Name · source · date</small></div>
@@ -893,7 +935,7 @@ def home_en():
 <section class="alt"><div class="wrap split rev">
   <div class="pic"><img src="../img/geschichte-1905.jpg" alt="Historic postcard: Warnemünde beach and lighthouse around 1905" loading="lazy" data-zoom></div>
   <div><div class="eyebrow">Since 1850</div><h2 class="caps">The first hotel in town</h2><div class="rule"></div>
-  <p>In 1850 H. F. Ohlerich opened the "Hotel Pavillon" here – just as Warnemünde was becoming a seaside resort. In 1897 the lighthouse was built right in front of it. Today an owner-run hotel continues the story.</p>
+  <p>In 1850 H. F. Ohlerich built the "Hotel Pavillon" here – just as Warnemünde was becoming a seaside resort. In 1897 the lighthouse was built right in front of it. Today an owner-run hotel continues the story.</p>
   <p><a class="btn btn-line" href="history.html">The full story</a></p></div>
 </div></section>
 
@@ -970,6 +1012,7 @@ def room_page_en(r):
       </ul>
       <h3 style="margin-top:34px">Room features</h3>
       <ul class="kv">{feats}</ul>
+      {('<div class="note" data-n="3"><b>Widerspruch:</b> ' + e(r['warn'][len('Bitte prüfen: '):]) + '</div>') if r.get('warn') else ''}
     </div>
     <aside class="bookcard" data-bookcard="{r['slug']}">
       <div class="eyebrow" style="margin:0">Book directly with the hotel</div>
@@ -1225,7 +1268,8 @@ def cruise():
       <li>Abends an den Strand, morgens Frühstück mit Blick auf die Promenade</li>
       <li>Gepäckaufbewahrung und später Check-out am Abreisetag <span class="demo">Vorschlag</span></li>
     </ul>
-    <p class="slots-h" style="margin-top:12px">Hinweis: In der Haupt- und Zwischensaison gilt ein Mindestaufenthalt; einzelne Nächte sind kurzfristig bei Verfügbarkeit buchbar.</p>
+    <p class="slots-h" style="margin-top:12px">Hinweis: Laut Preisliste gilt ein Mindestaufenthalt (Nebensaison am Wochenende 2, Zwischensaison 4, Hauptsaison 6 Nächte); einzelne Nächte sind kurzfristig bei Verfügbarkeit buchbar.</p>
+    <div class="note" data-n="4"><b>Entscheidung nötig:</b> Eine Seite für Kreuzfahrtgäste lohnt sich nur, wenn eine einzelne Nacht auch buchbar ist. Vorschlag: Kreuzfahrt-Nächte vom Mindestaufenthalt ausnehmen – oder die Seite weglassen.</div>
     <p style="margin-top:22px"><a class="btn btn-navy" href="../buchen.html?room=panorama-doppelzimmer&amp;step=1">Nacht vor der Kreuzfahrt buchen</a> <a class="btn btn-line" href="../en/offers/cruise.html" lang="en">English</a></p>
     <div class="note" data-n="3"><b>Zielgruppe mit eigener Seite:</b> Viele Kreuzfahrtgäste kommen aus dem Ausland und suchen auf Englisch („hotel near Warnemünde cruise terminal“). Diese Seite gibt es deshalb in beiden Sprachen.</div>
   </div>
@@ -1251,7 +1295,7 @@ def cruise_en():
       <li>Evening walk on the beach, breakfast overlooking the promenade</li>
       <li>Luggage storage and late check-out on departure day <span class="demo">Proposal</span></li>
     </ul>
-    <p class="slots-h" style="margin-top:12px">Please note: a minimum stay applies in high and mid season; single nights can be booked at short notice, subject to availability.</p>
+    <p class="slots-h" style="margin-top:12px">Please note: per the price list a minimum stay applies (low-season weekends 2, mid season 4, high season 6 nights); single nights can be booked at short notice, subject to availability.</p>
     <p style="margin-top:22px"><a class="btn btn-navy" href="../book.html?room=panorama-doppelzimmer&amp;step=1">Book a night before your cruise</a></p>
   </div>
   <div class="pic2"><img class="tall" src="../../img/aussen-39.jpg" alt="Hotel am Leuchtturm" data-zoom><img src="../../img/pdz-4.jpg" alt="Panorama Double Room with sea view" loading="lazy" data-zoom><img src="../../img/fruehstueck-1.jpg" alt="Breakfast lounge" loading="lazy" data-zoom></div>

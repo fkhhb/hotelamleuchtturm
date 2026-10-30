@@ -308,3 +308,18 @@ footer a{color:#cfdbe5}
   footer{padding-bottom:110px}
 }
 @media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+
+/* Prüfbericht (Technik-Paket) */
+.pruef{min-width:860px}
+.pruef td{vertical-align:top;font-size:14.5px;line-height:1.45}
+.pruef td:first-child{min-width:130px}
+.pruef td:last-child{color:var(--sea)}
+@media (max-width:760px){
+  .pruef{min-width:0}
+  .pruef thead{display:none}
+  .pruef tr{display:block;padding:14px 16px;border-bottom:1px solid var(--line)}
+  .pruef tbody tr:last-child{border-bottom:0}
+  .pruef td{display:block;border:0;padding:3px 0}
+  .pruef td:first-child{font-size:16px;padding-bottom:6px}
+  .pruef td[data-l]::before{content:attr(data-l) ": ";font-weight:600;color:var(--navy)}
+}

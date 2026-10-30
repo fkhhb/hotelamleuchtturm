@@ -25,10 +25,14 @@ Yellow numbered notes explain which recommendation each element demonstrates. Th
 
 ## Key findings from the live site (30 Oct 2026)
 
-- **Guests who decline cookies cannot book.** The DIRS21 script only loads after consent; without it the booking button does nothing (`d21_api is not defined`).
+The full list of contradictions (website vs. DIRS21, German vs. English site, within the German site) is the **Prüfbericht** on [`/vorschlag/#pruefbericht`](https://hotelamleuchtturm.mndst.co/vorschlag/#pruefbericht), generated from `PRUEF` in `quelle/build_site.py`.
+
+- **Two cookie banners in a row.** After the site's own banner, the DIRS21 booking window asks again. Booking works with either answer (re-tested on the afternoon of 30 Oct). A morning test, during the server trouble, had the booking button doing nothing after cookies were declined; that no longer happens.
+- **Booking system and website disagree.** DIRS21 uses other room names (no „Komfort-Doppelzimmer“), shows lower off-season prices than the price list, sells stays shorter than the stated minimum, and never offered the Panorama-Terrassen-Doppelzimmer in 8 tested date ranges.
+- **The English site is out of date.** Old prices (2023/24), four-week instead of 14-day cancellation, different minimum stays, and it claims public parking at the hotel (German: pedestrian zone, none).
 - **Booking has no URL.** DIRS21 opens as an overlay. A direct link already works and should be used instead:
   `https://reservation.one.dirs21.de/hotel-am-leuchtturmde?range=2027-05-14,2027-05-17&culture=de-DE&show_results=true`
-- **Server runs end-of-life PHP 5.x / OpenSSL 1.0.2.** The site was down for several hours on 30 Oct 2026 (HTTP 500 on every page).
+- **Server runs end-of-life PHP 5.x / OpenSSL 1.0.2.** The site was down for several hours on 30 Oct 2026 (HTTP 500 on every page). It is back up, but the server still reports PHP 5.6.40 / 5.4.45.
 - No `robots.txt`, `sitemap.xml` or `llms.txt`. Unknown pages redirect to the homepage instead of returning 404.
 - Contradictions: 2023 apartment prices, cleaning every 3 vs. 4 days, "max. 2 adults" vs. "extra bed for 3rd person", founded 1850 vs. 1851, page title typo „Preie & Konditionen".
 
@@ -36,12 +40,12 @@ Yellow numbered notes explain which recommendation each element demonstrates. Th
 
 | Real (from hotel-am-leuchtturm.de) | Demo / proposal |
 | --- | --- |
-| Room facts, floors, sizes, beds, equipment | Availability and "next free dates" (simulated) |
-| 2026 seasonal prices, extra bed 75 € | Breakfast price (22 € p.p./night) |
+| Room facts, floors, sizes, beds, equipment, minimum stays incl. Easter/Ascension/Whitsun/New Year's Eve | Availability and "next free dates" (simulated) |
+| 2026 seasonal prices, extra bed 75 € | Breakfast price (20 € p.p./night, the only published figure – from the outdated English price list) |
 | 14-day free cancellation, payment methods, check-in/out | Kurtaxe (3 € p.p./night) |
 | Parking at Kurhaus garage, 14 € / 24 h | Non-refundable saver rate −10 %, late check-out, Sekt |
 | History, directions, winter offer (ab 105 €), Hanse Sail 2027 dates (city event calendar) | Hanse Sail and cruise package contents and prices, voucher online purchase |
-| Kayak score 8.9 from 881 reviews (Oct 2026) | Review quotes (empty placeholders) |
+| Review score 91 % from 1,563 reviews on 10 portals (the hotel's own Customer Alliance widget, Oct 2026) | Review quotes (empty placeholders) |
 
 Demo values live at the top of `assets/site.js` (`BREAKFAST`, `KURTAXE`, `SAVER`, `EXTRAS`) and in the availability functions `freeNight` / `nextFree`.
 
