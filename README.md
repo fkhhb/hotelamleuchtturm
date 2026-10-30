@@ -40,7 +40,7 @@ Yellow numbered notes explain which recommendation each element demonstrates. Th
 | 2026 seasonal prices, extra bed 75 € | Breakfast price (22 € p.p./night) |
 | 14-day free cancellation, payment methods, check-in/out | Kurtaxe (3 € p.p./night) |
 | Parking at Kurhaus garage, 14 € / 24 h | Non-refundable saver rate −10 %, late check-out, Sekt |
-| History, directions, winter offer (ab 105 €) | Hanse Sail and cruise pages ("Seite folgt") |
+| History, directions, winter offer (ab 105 €), Hanse Sail 2027 dates (city event calendar) | Hanse Sail and cruise package contents and prices, voucher online purchase |
 | Kayak score 8.9 from 881 reviews (Oct 2026) | Review quotes (empty placeholders) |
 
 Demo values live at the top of `assets/site.js` (`BREAKFAST`, `KURTAXE`, `SAVER`, `EXTRAS`) and in the availability functions `freeNight` / `nextFree`.
