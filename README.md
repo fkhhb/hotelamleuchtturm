@@ -10,12 +10,13 @@ A clickable concept for a new website for [Hotel am Leuchtturm](https://www.hote
 
 | Page | File | What it shows |
 | --- | --- | --- |
-| Homepage | `index.html` | Search box → booking with dates in the URL, room cards with next free dates, breakfast lounge, lobby, offers, reviews (placeholders for real quotes), FAQ |
+| Homepage | `index.html` | Header photo from the lighthouse (hotel, promenade, beach) with the headline in a navy band below it, search box → booking with dates in the URL, room cards with next free dates, dune video band (5 s, AI-animated from a photo of the hotel, labelled as such), breakfast lounge, lobby, offers, reviews (placeholders for real quotes), FAQ |
 | Rooms & prices | `zimmer/index.html` | All six categories, the real 2026 price table, conditions, minimum stays |
 | Room pages | `zimmer/*.html` | Gallery, facts as text (size, floor, view, bed), sticky booking box with total price and next free dates |
 | Booking | `buchen.html` | 4 steps (room → rate → extras → summary). Every step is in the URL and survives reload/sharing. Step 4 links to the hotel's real DIRS21 booking with the same dates |
 | Apartments | `apartments.html` | Apartment house incl. the (outdated) 2023 prices, flagged |
-| Offer | `angebote/wintertage-in-warnemuende.html` | Real winter package, button opens booking pre-filled |
+| Offers | `angebote/` | Real winter package; Hanse Sail 2027 (5–8 Aug, per the city event calendar) with rooms facing the harbour entrance; before/after your cruise. Each button opens the booking pre-filled |
+| Gift vouchers | `gutscheine.html` | Amount chips and the proposed online purchase (pay online, instant PDF, redeem by code) |
 | History, location, gallery | `geschichte.html`, `lage-anfahrt.html`, `galerie.html` | Timeline since 1850, directions and parking, photo gallery with lightbox |
 | English version | `en/` | All guest-facing pages in English with English URLs (e.g. `/en/rooms/panorama-terrace-double-room`), hreflang-linked to the German pages. The DE / EN switch jumps to the matching page and keeps the booking selection. DIRS21 hand-off opens in English |
 | Tech package | `vorschlag/` | For the hotel's web agency: `sitemap.xml`, `robots.txt`, `llms.txt`, `schema-hotel.json`, 301 redirects (`.htaccess` + CSV), list of issues found |
@@ -81,5 +82,7 @@ Vercel project in the mndst team, connected to this repo. Every push to `main` d
 
 ## Before sharing publicly
 
-- [ ] Fill in the publisher details in `impressum.html` (via `imprint()` in `quelle/build_site.py`). A public site in Germany needs them.
-- [ ] Replace the review placeholders with real quotes (name, source, date) once the hotel agrees.
+- [x] Publisher name, company and email in `impressum.html` (Fritz Bremer · mndst.co, Berlin, info@mndst.co)
+- [ ] Add the street address and postcode in `imprint()` in `quelle/build_site.py` – placeholders `[Straße und Hausnummer]` and `[PLZ]` are still on the page
+- [ ] Confirm usage rights for the header photo (`img/hero-promenade.jpg`, aerial from the lighthouse) and the dune video source photo
+- [ ] Replace the review placeholders with real quotes (name, source, date) once the hotel agrees which ones may be used

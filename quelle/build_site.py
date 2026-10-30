@@ -65,6 +65,7 @@ PAIRS = {"index.html":"en/index.html","zimmer/index.html":"en/rooms/index.html",
          "angebote/index.html":"en/offers/index.html","angebote/wintertage-in-warnemuende.html":"en/offers/winter-days-in-warnemuende.html",
          "geschichte.html":"en/history.html","lage-anfahrt.html":"en/location.html","galerie.html":"en/gallery.html","buchen.html":"en/book.html"}
 PAIRS.update({f"zimmer/{de}.html": f"en/rooms/{en}.html" for de,en in EN_SLUG.items()})
+PAIRS.update({"angebote/hanse-sail.html":"en/offers/hanse-sail.html","angebote/kreuzfahrt.html":"en/offers/cruise.html","gutscheine.html":"en/vouchers.html"})
 PAIRS_INV = {v:k for k,v in PAIRS.items()}
 
 def ui(lang, R):
@@ -75,10 +76,10 @@ def ui(lang, R):
           notes="Hide notes", home="Hotel am Leuchtturm – home", logo_alt="Hotel am Leuchtturm – since 1850 in Warnemünde", menu_label="Menu",
           book=("en/book.html","Book now"), mbar=("From €139 per night","Best rate when booking direct","Book","Continue"),
           f_since="Since 1850 in Warnemünde", f_tel="Phone",
-          f_hotel=("Hotel", [("en/rooms/index.html","Rooms &amp; rates"),("en/apartments.html","Apartment house"),("en/offers/index.html","Offers"),("en/gallery.html","Gallery")]),
+          f_hotel=("Hotel", [("en/rooms/index.html","Rooms &amp; rates"),("en/apartments.html","Apartment house"),("en/offers/index.html","Offers"),("en/vouchers.html","Gift vouchers"),("en/gallery.html","Gallery")]),
           f_service=("Service", [("en/location.html","Location &amp; directions"),("en/index.html#faq","FAQ"),("en/history.html","History"),("en/book.html","Book online")]),
           f_legal=("Legal", [(f"{REAL}/DE/ueber-uns/impressum1.html","Hotel imprint"),(f"{REAL}/DE/ueber-uns/datenschutz.html","Privacy"),(f"{REAL}/DE/ueber-uns/agbs.html","Terms")]),
-          fnote=f'Concept draft for a redesign of hotel-am-leuchtturm.de · Content, room data and 2026 rates from the hotel\'s current website; availability, breakfast price, visitor\'s tax and items marked "proposal" are examples. Photos © Hotel am Leuchtturm; cover photo: A.Savin, Wikipedia (Free Art License). · <a href="{R}impressum.html">Imprint of this draft</a>',
+          fnote=f'Concept draft for a redesign of hotel-am-leuchtturm.de · Content, room data and 2026 rates from the hotel\'s current website; availability, breakfast price, visitor\'s tax and items marked "proposal" are examples. Photos © Hotel am Leuchtturm. · <a href="{R}impressum.html">Imprint of this draft</a>',
           photo="Photo", og="en_GB")
     return dict(
       menu=[("zimmer/index.html","Zimmer"),("apartments.html","Apartments"),("angebote/index.html","Angebote"),("lage-anfahrt.html","Lage"),("geschichte.html","Geschichte")],
@@ -86,10 +87,10 @@ def ui(lang, R):
       notes="Hinweise ausblenden", home="Hotel am Leuchtturm – Startseite", logo_alt="Hotel am Leuchtturm – seit 1850 in Warnemünde", menu_label="Menü",
       book=("buchen.html","Jetzt buchen"), mbar=("Ab 139 € pro Nacht","Bestpreis bei Direktbuchung","Buchen","Weiter"),
       f_since="Seit 1850 in Warnemünde", f_tel="Tel.",
-      f_hotel=("Hotel", [("zimmer/index.html","Zimmer &amp; Preise"),("apartments.html","Apartmenthaus"),("angebote/index.html","Angebote"),("galerie.html","Galerie")]),
+      f_hotel=("Hotel", [("zimmer/index.html","Zimmer &amp; Preise"),("apartments.html","Apartmenthaus"),("angebote/index.html","Angebote"),("gutscheine.html","Gutscheine"),("galerie.html","Galerie")]),
       f_service=("Service", [("lage-anfahrt.html","Lage &amp; Anfahrt"),("index.html#fragen","Häufige Fragen"),("geschichte.html","Geschichte"),("buchen.html","Online buchen")]),
       f_legal=("Rechtliches", [(f"{REAL}/DE/ueber-uns/impressum1.html","Impressum des Hotels"),(f"{REAL}/DE/ueber-uns/datenschutz.html","Datenschutz"),(f"{REAL}/DE/ueber-uns/agbs.html","AGB")]),
-      fnote=f'Konzeptentwurf zur Neugestaltung von hotel-am-leuchtturm.de · Inhalte, Zimmerdaten und Preise 2026 von der aktuellen Website des Hotels; Verfügbarkeiten, Frühstückspreis, Kurtaxe und als „Vorschlag“ markierte Leistungen sind Beispiele. Fotos © Hotel am Leuchtturm; Titelbild: A.Savin, Wikipedia (Free Art License). · <a href="{R}vorschlag/index.html">Technik-Paket (Sitemap, robots.txt, llms.txt, Weiterleitungen)</a> · <a href="{R}impressum.html">Impressum dieses Entwurfs</a>',
+      fnote=f'Konzeptentwurf zur Neugestaltung von hotel-am-leuchtturm.de · Inhalte, Zimmerdaten und Preise 2026 von der aktuellen Website des Hotels; Verfügbarkeiten, Frühstückspreis, Kurtaxe und als „Vorschlag“ markierte Leistungen sind Beispiele. Fotos © Hotel am Leuchtturm. · <a href="{R}vorschlag/index.html">Technik-Paket (Sitemap, robots.txt, llms.txt, Weiterleitungen)</a> · <a href="{R}impressum.html">Impressum dieses Entwurfs</a>',
       photo="Foto", og="de_DE")
 
 def page(path, title, desc, body, active="", schema=None, mbar=True, mbar_href=None, lang="de"):
@@ -123,8 +124,8 @@ def page(path, title, desc, body, active="", schema=None, mbar=True, mbar_href=N
 <meta property="og:site_name" content="Hotel am Leuchtturm – Konzeptentwurf">
 <meta property="og:title" content="{e(title)}">
 <meta property="og:description" content="{e(desc)}">
-<meta property="og:image" content="{LIVE}/img/hero-vom-leuchtturm-960.jpg">
-<meta property="og:image:width" content="960"><meta property="og:image:height" content="640">
+<meta property="og:image" content="{LIVE}/img/hero-promenade-960.jpg">
+<meta property="og:image:width" content="960"><meta property="og:image:height" content="576">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="theme-color" content="#00284b">
 <link rel="icon" href="{R}img/favicon.png">
@@ -208,8 +209,8 @@ def home():
     faq = "".join(f"<details><summary>{e(q)}</summary><p>{e(a)}</p></details>" for q,a in FAQ)
     body = f"""
 <section class="hero" style="padding:0">
-  <picture><source media="(max-width:640px)" srcset="img/hero-vom-leuchtturm-960.jpg"><img class="hero-img" src="img/hero-vom-leuchtturm.jpg" alt="Das Hotel am Leuchtturm von oben, fotografiert vom Leuchtturm Warnemünde aus" fetchpriority="high"></picture>
-  <span class="hero-credit">Blick vom Leuchtturm auf das Hotel · Foto: <a href="https://commons.wikimedia.org/wiki/File:Rostock_asv2018-05_img64_Warnemuende_view_from_lighthouse.jpg">A.Savin, Wikipedia</a> · <a href="https://artlibre.org/licence/lal/de/">Free Art License</a></span>
+  <picture><source media="(max-width:640px)" srcset="img/hero-promenade-960.jpg"><img class="hero-img" src="img/hero-promenade.jpg" alt="Blick vom Leuchtturm auf das Hotel am Leuchtturm, die Strandpromenade und den Strand von Warnemünde" fetchpriority="high"></picture>
+  <span class="hero-credit">Blick vom Leuchtturm auf Hotel, Promenade und Strand</span>
   <div class="hero-copy"><div class="wrap">
     <div class="eyebrow">Der Blick vom Leuchtturm auf unser Haus · seit 1850</div>
     <h1 class="caps">Direkt am Leuchtturm</h1>
@@ -231,9 +232,6 @@ def home():
   </div>
 </div></section>
 
-<div class="strip strip-video"><video class="strip-vid" autoplay muted loop playsinline preload="metadata" poster="img/duenen-zoom-poster.jpg" aria-label="Langsame Kamerafahrt durch die Dünen auf das Hotel am Leuchtturm zu"><source media="(max-width:640px)" src="img/duenen-zoom-960.mp4" type="video/mp4"><source src="img/duenen-zoom.mp4" type="video/mp4"></video>
-  <div class="vcap"><div class="wrap"><div><div class="eyebrow">Hinter den Dünen</div><h2 class="caps">Vom Strand direkt ins Hotel</h2><p>Zwischen Ihrem Zimmer und der Ostsee liegen nur die Promenade und ein paar Schritte durch die Dünen.</p></div><a class="btn btn-white" href="buchen.html">Verfügbarkeit prüfen</a></div></div></div>
-
 <section class="alt" id="zimmer"><div class="wrap">
   <div class="center"><div class="eyebrow">Zimmer &amp; Preise</div><h2 class="caps">Ihr Zimmer am Meer</h2><div class="rule"></div>
   <p class="lead">Klassisch-modern im Boutiquestil, mit Betten in Komforthöhe und Bädern in Marmoroptik. Wählen Sie Ihren Blick – und buchen Sie direkt den nächsten freien Termin.</p>
@@ -241,6 +239,9 @@ def home():
   <div class="cards">{cards}</div>
   <p class="center" style="margin-top:30px"><a class="btn btn-line" href="zimmer/index.html#preise">Alle Preise &amp; Konditionen</a></p>
 </div></section>
+
+<div class="strip strip-video"><video class="strip-vid" autoplay muted loop playsinline preload="metadata" poster="img/duenen-zoom-poster.jpg" aria-label="Langsame Kamerafahrt durch die Dünen auf das Hotel am Leuchtturm zu"><source media="(max-width:640px)" src="img/duenen-zoom-960.mp4" type="video/mp4"><source src="img/duenen-zoom.mp4" type="video/mp4"></video>
+  <div class="vcap"><div class="wrap"><div><div class="eyebrow">Hinter den Dünen</div><h2 class="caps">Vom Strand direkt ins Hotel</h2><p>Zwischen Ihrem Zimmer und der Ostsee liegen nur die Promenade und ein paar Schritte durch die Dünen.</p><p class="vnote">Kurzer Film, per KI aus einem Foto des Hotels animiert.</p></div><a class="btn btn-white" href="buchen.html">Verfügbarkeit prüfen</a></div></div></div>
 
 <section><div class="wrap split">
   <div class="pic2"><img class="tall" src="img/fruehstueck-1.jpg" alt="Frühstückslounge mit Blick auf die Strandpromenade" loading="lazy" data-zoom><img src="img/buffet.jpg" alt="Frühstücksbuffet" loading="lazy" data-zoom><img src="img/fruehstueck-3.jpg" alt="Gedeckter Frühstückstisch" loading="lazy" data-zoom></div>
@@ -264,8 +265,8 @@ def home():
   <div class="note" data-n="3"><b>Eigene Seiten für Anlässe und Zielgruppen</b> – jede mit vorausgefüllter Buchung. Genau solche Seiten beantworten Fragen, die Gäste Google und ChatGPT stellen („Hotel zur Hanse Sail“, „Hotel vor der Kreuzfahrt“).</div></div>
   <div class="tiles">
     <article class="tile"><img src="img/lobby.jpg" alt="Lobby mit Kamin" loading="lazy"><div class="bd"><div class="when">28. Oktober – 20. Dezember 2026</div><h3>Wintertage in Warnemünde</h3><p>Heißgetränk am Kamin, Komfort- oder Terrassen-Doppelzimmer, Frühstück, Kurtaxe und Parken inklusive – ab 105 € pro Person und Nacht.</p><a class="btn btn-line" href="angebote/wintertage-in-warnemuende.html">Zum Angebot</a></div></article>
-    <article class="tile"><img src="img/stage-6.jpg" alt="Strand und Leuchtturm" loading="lazy" style="object-position:85% 50%"><div class="bd"><div class="when">August <span class="demo">Vorschlag</span></div><h3>Hanse Sail</h3><p>Großsegler laufen direkt vor dem Hotel in den Hafen ein – ein Zimmer mit Blick auf die Hafeneinfahrt ist der beste Platz.</p><a class="btn btn-line" href="#" data-toast="Vorschlag: eigene Seite zur Hanse Sail mit den offiziellen Terminen und vorausgefüllter Buchung.">Seite folgt</a></div></article>
-    <article class="tile"><img src="img/aussen-39.jpg" alt="Hotel am Leuchtturm von außen" loading="lazy"><div class="bd"><div class="when">Ganzjährig <span class="demo">Vorschlag</span></div><h3>Vor oder nach der Kreuzfahrt</h3><p>Eine Nacht am Meer vor dem Ablegen in Warnemünde – mit Gepäckaufbewahrung und spätem Check-out, auf Deutsch und Englisch.</p><a class="btn btn-line" href="#" data-toast="Vorschlag: eigene (auch englische) Seite für Kreuzfahrtgäste mit Ein-Klick-Buchung.">Seite folgt</a></div></article>
+    <article class="tile"><img src="img/stage-6.jpg" alt="Strand und Leuchtturm" loading="lazy" style="object-position:85% 50%"><div class="bd"><div class="when">5.–8. August 2027</div><h3>Hanse Sail</h3><p>Großsegler laufen direkt vor dem Hotel in den Hafen ein – ein Zimmer mit Blick auf die Hafeneinfahrt ist der beste Platz.</p><a class="btn btn-line" href="angebote/hanse-sail.html">Zur Hanse Sail</a></div></article>
+    <article class="tile"><img src="img/aussen-39.jpg" alt="Hotel am Leuchtturm von außen" loading="lazy"><div class="bd"><div class="when">Ganzjährig</div><h3>Vor oder nach der Kreuzfahrt</h3><p>Eine Nacht am Meer vor dem Ablegen in Warnemünde – das Cruise Center ist zu Fuß erreichbar.</p><a class="btn btn-line" href="angebote/kreuzfahrt.html">Mehr erfahren</a></div></article>
   </div>
 </div></section>
 
@@ -461,8 +462,8 @@ def offers():
   <div class="eyebrow">Arrangements &amp; Anlässe</div><h1 class="caps" style="font-size:clamp(32px,4.4vw,52px)">Angebote</h1><div class="rule"></div>
   <div class="tiles">
     <article class="tile"><img src="../img/lobby.jpg" alt="Lobby mit Kamin" loading="lazy"><div class="bd"><div class="when">28.10. – 20.12.2026</div><h3>Wintertage in Warnemünde</h3><p>Heißgetränk am Kamin, Frühstück, Kurtaxe und Parken inklusive – ab 105 € p. P./Nacht.</p><a class="btn btn-navy" href="wintertage-in-warnemuende.html">Zum Angebot</a></div></article>
-    <article class="tile"><img src="../img/stage-4.jpg" alt="Dachterrasse" loading="lazy"><div class="bd"><div class="when">August <span class="demo">Vorschlag</span></div><h3>Hanse Sail vom Zimmer aus</h3><p>Eigene Seite mit den offiziellen Terminen und Zimmern mit Blick auf die Hafeneinfahrt.</p><a class="btn btn-line" href="#" data-toast="Vorschlag für eine neue Angebotsseite.">Seite folgt</a></div></article>
-    <article class="tile"><img src="../img/aussen-37.jpg" alt="Hotel am Leuchtturm" loading="lazy"><div class="bd"><div class="when">Ganzjährig <span class="demo">Vorschlag</span></div><h3>Vor oder nach der Kreuzfahrt</h3><p>Englischsprachige Seite für Kreuzfahrtgäste mit Gepäckaufbewahrung und spätem Check-out.</p><a class="btn btn-line" href="#" data-toast="Vorschlag für eine neue Angebotsseite.">Seite folgt</a></div></article>
+    <article class="tile"><img src="../img/stage-4.jpg" alt="Dachterrasse" loading="lazy"><div class="bd"><div class="when">5.–8. August 2027</div><h3>Hanse Sail vom Zimmer aus</h3><p>Großsegler in der Hafeneinfahrt – und Zimmer mit Blick darauf, früh buchbar.</p><a class="btn btn-navy" href="hanse-sail.html">Zur Hanse Sail</a></div></article>
+    <article class="tile"><img src="../img/aussen-37.jpg" alt="Hotel am Leuchtturm" loading="lazy"><div class="bd"><div class="when">Ganzjährig</div><h3>Vor oder nach der Kreuzfahrt</h3><p>Eine Nacht am Meer, das Cruise Center zu Fuß erreichbar – auch auf Englisch.</p><a class="btn btn-navy" href="kreuzfahrt.html">Mehr erfahren</a></div></article>
   </div>
 </div></section>
 """
@@ -557,7 +558,7 @@ def imprint():
     body = """
 <section><div class="wrap narrow"><div class="eyebrow">Konzeptentwurf</div><h1 class="caps" style="font-size:40px">Impressum dieses Entwurfs</h1><div class="rule"></div>
 <p>Diese Seiten sind ein unverbindlicher <b>Konzeptentwurf</b> für eine mögliche Neugestaltung der Website des Hotel am Leuchtturm. Sie sind keine offizielle Website des Hotels; es werden keine Buchungen angenommen und keine personenbezogenen Daten erhoben.</p>
-<p><b>Verantwortlich für diesen Entwurf:</b><br>[Name / Firma]<br>[Anschrift]<br>[E-Mail]</p>
+<p><b>Verantwortlich für diesen Entwurf:</b><br>Fritz Bremer · mndst.co<br>[Straße und Hausnummer]<br>[PLZ] Berlin<br>E-Mail: <a href="mailto:info@mndst.co">info@mndst.co</a></p>
 <p>Texte, Zimmerangaben, Preise und Fotos stammen von der Website des Hotel am Leuchtturm (Am Leuchtturm 16, 18119 Rostock-Warnemünde) und dienen ausschließlich der Präsentation dieses Entwurfs. Fotos © Hotel am Leuchtturm.</p>
 <p>Zur offiziellen Website: <a href="https://www.hotel-am-leuchtturm.de/DE/home.html">hotel-am-leuchtturm.de</a></p></div></section>
 """
@@ -571,6 +572,8 @@ NEW = [  # (neuer Pfad, alte Pfade, Priorität, changefreq)
  ("/apartments/", ["/DE/apartmenthaus-am-leuchtturm1.html", "/DE/apartmenthaus-am-leuchtturm1/apartmenthaus-am-leuchtturm.html"], "0.8", "monthly"),
  ("/angebote/", ["/DE/arrangements.html"], "0.8", "weekly"),
  ("/angebote/wintertage-in-warnemuende/", ["/DE/arrangements,arrangement-8-wintertage-in-warnemuende.html"], "0.7", "monthly"),
+ ("/angebote/hanse-sail/", [], "0.7", "monthly"),
+ ("/angebote/kreuzfahrt/", [], "0.7", "monthly"),
  ("/buchen/", [], "0.8", "weekly"),
  ("/galerie/", ["/DE/hotel-zimmer/fotogalerie.html"], "0.5", "yearly"),
  ("/gutscheine/", ["/DE/hotel-zimmer/gutscheine.html"], "0.5", "yearly"),
@@ -584,7 +587,7 @@ NEW = [  # (neuer Pfad, alte Pfade, Priorität, changefreq)
 ]
 
 EN_URL = {"/":"/en/","/zimmer/":"/en/rooms/","/apartments/":"/en/apartments/","/angebote/":"/en/offers/",
-          "/angebote/wintertage-in-warnemuende/":"/en/offers/winter-days-in-warnemuende/","/buchen/":"/en/book/","/galerie/":"/en/gallery/",
+          "/angebote/wintertage-in-warnemuende/":"/en/offers/winter-days-in-warnemuende/","/angebote/hanse-sail/":"/en/offers/hanse-sail/","/angebote/kreuzfahrt/":"/en/offers/cruise/","/buchen/":"/en/book/","/galerie/":"/en/gallery/",
           "/gutscheine/":"/en/vouchers/","/geschichte/":"/en/history/","/lage-anfahrt/":"/en/location/","/kontakt/":"/en/contact/",
           "/partner/":"/en/partners/","/impressum/":"/en/imprint/","/datenschutz/":"/en/privacy/","/agb/":"/en/terms/"}
 def en_url(new):
@@ -661,6 +664,9 @@ Mindestaufenthalt: Wochenende Nebensaison 2 Nächte, Zwischensaison 4, Hauptsais
 ## Angebote
 
 - [Wintertage in Warnemünde]({REAL}/angebote/wintertage-in-warnemuende/): 28.10.–20.12.2026, ab 105 € pro Person und Nacht im Doppelzimmer inkl. Frühstück, Kurtaxe, Parken und Heißgetränk am Kamin.
+- [Hanse Sail]({REAL}/angebote/hanse-sail/): Hanse Sail 2027 vom 5. bis 8. August; Zimmer mit Blick auf Leuchtturm und Hafeneinfahrt, durch die die Großsegler einlaufen. Hauptsaison: Mindestaufenthalt 6 Nächte.
+- [Vor oder nach der Kreuzfahrt]({REAL}/angebote/kreuzfahrt/): Das Warnemünde Cruise Center am Bahnhof Warnemünde ist zu Fuß erreichbar.
+- [Gutscheine]({REAL}/gutscheine/): Wertgutscheine für Übernachtungen, Betrag frei wählbar.
 
 ## Weitere Seiten
 
@@ -808,8 +814,8 @@ def home_en():
     faq = "".join(f"<details><summary>{e(q)}</summary><p>{e(a)}</p></details>" for q,a in FAQ_EN)
     body = f"""
 <section class="hero" style="padding:0">
-  <picture><source media="(max-width:640px)" srcset="../img/hero-vom-leuchtturm-960.jpg"><img class="hero-img" src="../img/hero-vom-leuchtturm.jpg" alt="Hotel am Leuchtturm seen from above, photographed from the Warnemünde lighthouse" fetchpriority="high"></picture>
-  <span class="hero-credit">The view from the lighthouse onto the hotel · Photo: <a href="https://commons.wikimedia.org/wiki/File:Rostock_asv2018-05_img64_Warnemuende_view_from_lighthouse.jpg">A.Savin, Wikipedia</a> · <a href="https://artlibre.org/licence/lal/en/">Free Art License</a></span>
+  <picture><source media="(max-width:640px)" srcset="../img/hero-promenade-960.jpg"><img class="hero-img" src="../img/hero-promenade.jpg" alt="View from the lighthouse onto Hotel am Leuchtturm, the beach promenade and the beach of Warnemünde" fetchpriority="high"></picture>
+  <span class="hero-credit">The view from the lighthouse: hotel, promenade and beach</span>
   <div class="hero-copy"><div class="wrap">
     <div class="eyebrow">The view from the lighthouse onto our hotel · since 1850</div>
     <h1 class="caps">Right by the lighthouse</h1>
@@ -831,15 +837,15 @@ def home_en():
   </div>
 </div></section>
 
-<div class="strip strip-video"><video class="strip-vid" autoplay muted loop playsinline preload="metadata" poster="../img/duenen-zoom-poster.jpg" aria-label="Slow camera move through the dunes towards Hotel am Leuchtturm"><source media="(max-width:640px)" src="../img/duenen-zoom-960.mp4" type="video/mp4"><source src="../img/duenen-zoom.mp4" type="video/mp4"></video>
-  <div class="vcap"><div class="wrap"><div><div class="eyebrow">Behind the dunes</div><h2 class="caps">From the beach straight to the hotel</h2><p>Only the promenade and a few steps through the dunes lie between your room and the Baltic Sea.</p></div><a class="btn btn-white" href="book.html">Check availability</a></div></div></div>
-
 <section class="alt" id="rooms"><div class="wrap">
   <div class="center"><div class="eyebrow">Rooms &amp; rates</div><h2 class="caps">Your room by the sea</h2><div class="rule"></div>
   <p class="lead">Classic-modern boutique style, beds at comfort height and marble-look bathrooms. Choose your view – and book the next available date directly.</p></div>
   <div class="cards">{cards}</div>
   <p class="center" style="margin-top:30px"><a class="btn btn-line" href="rooms/index.html#rates">All rates &amp; conditions</a></p>
 </div></section>
+
+<div class="strip strip-video"><video class="strip-vid" autoplay muted loop playsinline preload="metadata" poster="../img/duenen-zoom-poster.jpg" aria-label="Slow camera move through the dunes towards Hotel am Leuchtturm"><source media="(max-width:640px)" src="../img/duenen-zoom-960.mp4" type="video/mp4"><source src="../img/duenen-zoom.mp4" type="video/mp4"></video>
+  <div class="vcap"><div class="wrap"><div><div class="eyebrow">Behind the dunes</div><h2 class="caps">From the beach straight to the hotel</h2><p>Only the promenade and a few steps through the dunes lie between your room and the Baltic Sea.</p><p class="vnote">Short clip, animated with AI from a photo of the hotel.</p></div><a class="btn btn-white" href="book.html">Check availability</a></div></div></div>
 
 <section><div class="wrap split">
   <div class="pic2"><img class="tall" src="../img/fruehstueck-1.jpg" alt="Breakfast lounge overlooking the beach promenade" loading="lazy" data-zoom><img src="../img/buffet.jpg" alt="Breakfast buffet" loading="lazy" data-zoom><img src="../img/fruehstueck-3.jpg" alt="Breakfast table" loading="lazy" data-zoom></div>
@@ -861,9 +867,9 @@ def home_en():
 <section><div class="wrap">
   <div class="center"><div class="eyebrow">Offers &amp; occasions</div><h2 class="caps">Book these dates early</h2><div class="rule"></div></div>
   <div class="tiles">
-    <article class="tile"><img src="../img/aussen-39.jpg" alt="Hotel am Leuchtturm" loading="lazy"><div class="bd"><div class="when">All year <span class="demo">Proposal</span></div><h3>Before or after your cruise</h3><p>A night by the sea before you sail from Warnemünde – the cruise terminal is within walking distance. Ask about luggage storage and late check-out.</p><a class="btn btn-line" href="{en_book(R,'room=panorama-doppelzimmer&amp;step=1')}">Book a night</a></div></article>
+    <article class="tile"><img src="../img/aussen-39.jpg" alt="Hotel am Leuchtturm" loading="lazy"><div class="bd"><div class="when">All year</div><h3>Before or after your cruise</h3><p>A night by the sea before you sail from Warnemünde – the cruise centre is within walking distance.</p><a class="btn btn-line" href="offers/cruise.html">Learn more</a></div></article>
     <article class="tile"><img src="../img/lobby.jpg" alt="Lobby with fireplace" loading="lazy"><div class="bd"><div class="when">28 Oct – 20 Dec 2026</div><h3>Winter days in Warnemünde</h3><p>Hot drink by the fireplace, Comfort or Terrace Double Room, breakfast, visitor's tax and parking included – from €105 per person and night.</p><a class="btn btn-line" href="offers/winter-days-in-warnemuende.html">View offer</a></div></article>
-    <article class="tile"><img src="../img/stage-6.jpg" alt="Beach and lighthouse" loading="lazy" style="object-position:85% 50%"><div class="bd"><div class="when">August <span class="demo">Proposal</span></div><h3>Hanse Sail</h3><p>Tall ships sail into the harbour right in front of the hotel – a room facing the harbour entrance is the best seat in town.</p><a class="btn btn-line" href="#" data-toast="Proposal: a dedicated Hanse Sail page with the official dates and pre-filled booking.">Page to follow</a></div></article>
+    <article class="tile"><img src="../img/stage-6.jpg" alt="Beach and lighthouse" loading="lazy" style="object-position:85% 50%"><div class="bd"><div class="when">5–8 August 2027</div><h3>Hanse Sail</h3><p>Tall ships sail into the harbour right in front of the hotel – a room facing the harbour entrance is the best seat in town.</p><a class="btn btn-line" href="offers/hanse-sail.html">Hanse Sail stays</a></div></article>
   </div>
 </div></section>
 
@@ -1046,8 +1052,8 @@ def offers_en():
   <div class="eyebrow">Packages &amp; occasions</div><h1 class="caps" style="font-size:clamp(32px,4.4vw,52px)">Offers</h1><div class="rule"></div>
   <div class="tiles">
     <article class="tile"><img src="../../img/lobby.jpg" alt="Lobby with fireplace" loading="lazy"><div class="bd"><div class="when">28 Oct – 20 Dec 2026</div><h3>Winter days in Warnemünde</h3><p>Hot drink by the fireplace, breakfast, visitor's tax and parking included – from €105 per person/night.</p><a class="btn btn-navy" href="winter-days-in-warnemuende.html">View offer</a></div></article>
-    <article class="tile"><img src="../../img/aussen-37.jpg" alt="Hotel am Leuchtturm" loading="lazy"><div class="bd"><div class="when">All year <span class="demo">Proposal</span></div><h3>Before or after your cruise</h3><p>A night by the sea, a short walk from the cruise terminal, with luggage storage and late check-out on request.</p><a class="btn btn-line" href="{en_book('../../','room=panorama-doppelzimmer&amp;step=1')}">Book a night</a></div></article>
-    <article class="tile"><img src="../../img/stage-4.jpg" alt="Roof terrace" loading="lazy"><div class="bd"><div class="when">August <span class="demo">Proposal</span></div><h3>Hanse Sail from your room</h3><p>A dedicated page with the official dates and rooms overlooking the harbour entrance.</p><a class="btn btn-line" href="#" data-toast="Proposal for a new offer page.">Page to follow</a></div></article>
+    <article class="tile"><img src="../../img/aussen-37.jpg" alt="Hotel am Leuchtturm" loading="lazy"><div class="bd"><div class="when">All year</div><h3>Before or after your cruise</h3><p>A night by the sea, a short walk from the cruise centre.</p><a class="btn btn-navy" href="cruise.html">Learn more</a></div></article>
+    <article class="tile"><img src="../../img/stage-4.jpg" alt="Roof terrace" loading="lazy"><div class="bd"><div class="when">5–8 August 2027</div><h3>Hanse Sail from your room</h3><p>Tall ships in the harbour entrance – and rooms that look onto it, bookable early.</p><a class="btn btn-navy" href="hanse-sail.html">Hanse Sail stays</a></div></article>
   </div>
 </div></section>
 """
@@ -1135,7 +1141,177 @@ def build_en():
     home_en(); rooms_index_en(); [room_page_en(r) for r in ROOMS]; apartments_en(); offers_en(); history_en(); location_en(); gallery_en(); booking_en()
 
 
+# =====================================================================
+# Anlass-Seiten und Gutscheine (DE + EN)
+# =====================================================================
+HANSE_LD = {"@context":"https://schema.org","@type":"Event","name":"Hanse Sail 2027","startDate":"2027-08-05","endDate":"2027-08-08",
+            "location":{"@type":"Place","name":"Rostock und Warnemünde","address":"Rostock, Deutschland"}}
+
+def hanse_sail():
+    body = """
+<div class="wrap crumbs"><a href="../index.html">Startseite</a> › <a href="index.html">Angebote</a> › Hanse Sail</div>
+<section style="padding-top:22px"><div class="wrap split" style="align-items:start">
+  <div>
+    <div class="eyebrow">Hanse Sail 2027 · 5. bis 8. August</div>
+    <h1 class="caps" style="font-size:clamp(32px,4.4vw,52px)">Hanse Sail vom Hotel aus</h1><div class="rule"></div>
+    <p class="lead">Zur Hanse Sail laufen Großsegler und Traditionsschiffe durch die Hafeneinfahrt von Warnemünde ein – direkt am Leuchtturm, direkt vor dem Hotel.</p>
+    <h3>Die besten Zimmer dafür</h3>
+    <ul class="ticks">
+      <li><a href="../zimmer/terrassen-doppelzimmer.html">Terrassen-Doppelzimmer</a> – je nach Zimmer Blick auf Leuchtturm und Hafeneinfahrt, eigene 12 m² Dachterrasse</li>
+      <li><a href="../zimmer/komfort-doppelzimmer.html">Komfort-Doppelzimmer</a> – seitlicher Ostseeblick oder Blick auf Leuchtturm mit Hafeneinfahrt</li>
+      <li><a href="../zimmer/panorama-terrassen-doppelzimmer.html">Panorama-Terrassen-Doppelzimmer</a> – direkter Ostseeblick, 40 m² Dachterrasse mit Strandkorb</li>
+    </ul>
+    <h3 style="margin-top:26px">Gut zu wissen</h3>
+    <ul class="ticks">
+      <li>Die Hanse Sail fällt in die Hauptsaison: Mindestaufenthalt 6 Nächte, kürzere Aufenthalte kurzfristig bei Verfügbarkeit.</li>
+      <li>Preise 2027 stehen noch nicht fest. Zur Orientierung Hauptsaison 2026: ab 229 € bis ab 339 € pro Zimmer und Nacht, ohne Frühstück.</li>
+      <li>Kostenfrei stornierbar bis 14 Tage vor Anreise.</li>
+    </ul>
+    <p style="margin-top:24px"><a class="btn btn-navy" href="../buchen.html?arrival=2027-08-04&amp;departure=2027-08-10&amp;adults=2&amp;room=terrassen-doppelzimmer&amp;step=2">Zur Hanse Sail buchen</a></p>
+    <p class="slots-h">Termin laut Veranstaltungskalender der Stadt; bitte vor Veröffentlichung mit dem offiziellen Programm abgleichen.</p>
+    <div class="note" data-n="6"><b>Event-Seite mit vorausgefüllter Buchung:</b> Der Button öffnet die Buchung schon mit Zimmer und Reisedaten rund um die Hanse Sail. Solche Seiten beantworten genau die Suche „Hotel Hanse Sail Warnemünde“ – bei Google und bei ChatGPT.</div>
+  </div>
+  <div><div class="pic"><img src="../img/tdz-3.jpg" alt="Terrassen-Doppelzimmer" data-zoom></div>
+  <div class="pic" style="margin-top:16px"><img src="../img/stage-6.jpg" alt="Strand, Leuchtturm und Hafeneinfahrt von Warnemünde" style="aspect-ratio:3/1" loading="lazy" data-zoom></div></div>
+</div></section>
+"""
+    page("angebote/hanse-sail.html", "Hanse Sail 2027 – Hotel am Leuchtturm direkt an der Hafeneinfahrt Warnemünde",
+         "Hanse Sail 2027 (5.–8. August) vom Hotel am Leuchtturm aus: Zimmer mit Blick auf Leuchtturm und Hafeneinfahrt, früh buchbar.",
+         body, active="angebote/index.html", schema=HANSE_LD)
+
+def hanse_sail_en():
+    body = """
+<div class="wrap crumbs"><a href="../index.html">Home</a> › <a href="index.html">Offers</a> › Hanse Sail</div>
+<section style="padding-top:22px"><div class="wrap split" style="align-items:start">
+  <div>
+    <div class="eyebrow">Hanse Sail 2027 · 5 to 8 August</div>
+    <h1 class="caps" style="font-size:clamp(32px,4.4vw,52px)">Hanse Sail from the hotel</h1><div class="rule"></div>
+    <p class="lead">During Hanse Sail, tall ships and traditional sailing vessels enter the harbour of Warnemünde – right by the lighthouse, right in front of the hotel.</p>
+    <h3>The best rooms for it</h3>
+    <ul class="ticks">
+      <li><a href="../rooms/terrace-double-room.html">Terrace Double Room</a> – depending on the room, a view of the lighthouse and harbour entrance, private 12 m² roof terrace</li>
+      <li><a href="../rooms/comfort-double-room.html">Comfort Double Room</a> – side sea view or view of the lighthouse and harbour entrance</li>
+      <li><a href="../rooms/panorama-terrace-double-room.html">Panorama Terrace Double Room</a> – direct sea view, 40 m² roof terrace with beach chair</li>
+    </ul>
+    <h3 style="margin-top:26px">Good to know</h3>
+    <ul class="ticks">
+      <li>Hanse Sail falls in the high season: minimum stay 6 nights, shorter stays at short notice, subject to availability.</li>
+      <li>2027 rates are not yet published. For orientation, high season 2026: from €229 to from €339 per room and night, excl. breakfast.</li>
+      <li>Free cancellation up to 14 days before arrival.</li>
+    </ul>
+    <p style="margin-top:24px"><a class="btn btn-navy" href="../book.html?arrival=2027-08-04&amp;departure=2027-08-10&amp;adults=2&amp;room=terrassen-doppelzimmer&amp;step=2">Book for Hanse Sail</a></p>
+    <p class="slots-h">Dates as listed in the city's event calendar.</p>
+  </div>
+  <div><div class="pic"><img src="../../img/tdz-3.jpg" alt="Terrace Double Room" data-zoom></div>
+  <div class="pic" style="margin-top:16px"><img src="../../img/stage-6.jpg" alt="Beach, lighthouse and harbour entrance of Warnemünde" style="aspect-ratio:3/1" loading="lazy" data-zoom></div></div>
+</div></section>
+"""
+    page("en/offers/hanse-sail.html", "Hanse Sail 2027 – Hotel am Leuchtturm at the harbour entrance of Warnemünde",
+         "Hanse Sail 2027 (5–8 August) from Hotel am Leuchtturm: rooms overlooking the lighthouse and harbour entrance, bookable early.",
+         body, active="en/offers/index.html", lang="en", schema=HANSE_LD)
+
+def cruise():
+    body = """
+<div class="wrap crumbs"><a href="../index.html">Startseite</a> › <a href="index.html">Angebote</a> › Kreuzfahrt</div>
+<section style="padding-top:22px"><div class="wrap split" style="align-items:start">
+  <div>
+    <div class="eyebrow">Ganzjährig · Warnemünde Cruise Center</div>
+    <h1 class="caps" style="font-size:clamp(32px,4.4vw,52px)">Vor oder nach der Kreuzfahrt</h1><div class="rule"></div>
+    <p class="lead">Warnemünde ist einer der großen Kreuzfahrthäfen an der Ostsee. Das Cruise Center liegt am Bahnhof Warnemünde – vom Hotel zu Fuß über die Bahnhofsbrücke erreichbar (ca. 500 m bis zum Bahnhof).</p>
+    <h3>Ihre Nacht am Meer</h3>
+    <ul class="ticks">
+      <li>Anreise mit dem Zug: IC bis Rostock Hbf, S-Bahn bis Warnemünde</li>
+      <li>Zimmer ab 15 Uhr, Abreise bis 11 Uhr – Rezeption rund um die Uhr</li>
+      <li>Abends an den Strand, morgens Frühstück mit Blick auf die Promenade</li>
+      <li>Gepäckaufbewahrung und später Check-out am Abreisetag <span class="demo">Vorschlag</span></li>
+    </ul>
+    <p class="slots-h" style="margin-top:12px">Hinweis: In der Haupt- und Zwischensaison gilt ein Mindestaufenthalt; einzelne Nächte sind kurzfristig bei Verfügbarkeit buchbar.</p>
+    <p style="margin-top:22px"><a class="btn btn-navy" href="../buchen.html?room=panorama-doppelzimmer&amp;step=1">Nacht vor der Kreuzfahrt buchen</a> <a class="btn btn-line" href="../en/offers/cruise.html" lang="en">English</a></p>
+    <div class="note" data-n="3"><b>Zielgruppe mit eigener Seite:</b> Viele Kreuzfahrtgäste kommen aus dem Ausland und suchen auf Englisch („hotel near Warnemünde cruise terminal“). Diese Seite gibt es deshalb in beiden Sprachen.</div>
+  </div>
+  <div class="pic2"><img class="tall" src="../img/aussen-39.jpg" alt="Hotel am Leuchtturm" data-zoom><img src="../img/pdz-4.jpg" alt="Panorama-Doppelzimmer mit Blick auf die Ostsee" loading="lazy" data-zoom><img src="../img/fruehstueck-1.jpg" alt="Frühstückslounge" loading="lazy" data-zoom></div>
+</div></section>
+"""
+    page("angebote/kreuzfahrt.html", "Hotel vor oder nach der Kreuzfahrt in Warnemünde – Hotel am Leuchtturm",
+         "Übernachten vor oder nach der Kreuzfahrt: Das Hotel am Leuchtturm liegt an der Strandpromenade, das Cruise Center am Bahnhof Warnemünde ist zu Fuß erreichbar.",
+         body, active="angebote/index.html", schema=HOTEL_LD)
+
+def cruise_en():
+    body = """
+<div class="wrap crumbs"><a href="../index.html">Home</a> › <a href="index.html">Offers</a> › Cruise</div>
+<section style="padding-top:22px"><div class="wrap split" style="align-items:start">
+  <div>
+    <div class="eyebrow">All year · Warnemünde Cruise Center</div>
+    <h1 class="caps" style="font-size:clamp(32px,4.4vw,52px)">Before or after your cruise</h1><div class="rule"></div>
+    <p class="lead">Warnemünde is one of the major cruise ports on the Baltic Sea. The cruise centre is next to Warnemünde station – within walking distance of the hotel across the station bridge (about 500 m to the station).</p>
+    <h3>Your night by the sea</h3>
+    <ul class="ticks">
+      <li>By train: intercity to Rostock Hbf, then the S-Bahn to Warnemünde</li>
+      <li>Rooms from 3 pm, check-out until 11 am – reception open around the clock</li>
+      <li>Evening walk on the beach, breakfast overlooking the promenade</li>
+      <li>Luggage storage and late check-out on departure day <span class="demo">Proposal</span></li>
+    </ul>
+    <p class="slots-h" style="margin-top:12px">Please note: a minimum stay applies in high and mid season; single nights can be booked at short notice, subject to availability.</p>
+    <p style="margin-top:22px"><a class="btn btn-navy" href="../book.html?room=panorama-doppelzimmer&amp;step=1">Book a night before your cruise</a></p>
+  </div>
+  <div class="pic2"><img class="tall" src="../../img/aussen-39.jpg" alt="Hotel am Leuchtturm" data-zoom><img src="../../img/pdz-4.jpg" alt="Panorama Double Room with sea view" loading="lazy" data-zoom><img src="../../img/fruehstueck-1.jpg" alt="Breakfast lounge" loading="lazy" data-zoom></div>
+</div></section>
+"""
+    page("en/offers/cruise.html", "Hotel before or after your cruise in Warnemünde – Hotel am Leuchtturm",
+         "Stay before or after your Baltic cruise: Hotel am Leuchtturm is on the beach promenade, and the Warnemünde Cruise Center next to the station is within walking distance.",
+         body, active="en/offers/index.html", lang="en", schema=HOTEL_LD_EN)
+
+def vouchers():
+    chips = "".join(f'<a class="slot" href="#" data-toast="Im Entwurf: Betrag wählen, online bezahlen, Gutschein sofort als PDF erhalten.">{v} €</a>' for v in (100, 200, 300, 500))
+    body = f"""
+<div class="wrap crumbs"><a href="index.html">Startseite</a> › Gutscheine</div>
+<section style="padding-top:22px"><div class="wrap split" style="align-items:start">
+  <div>
+    <div class="eyebrow">Zum Verschenken</div>
+    <h1 class="caps" style="font-size:clamp(32px,4.4vw,52px)">Gutscheine</h1><div class="rule"></div>
+    <p class="lead">Verschenken Sie Tage am Meer: Wertgutscheine für Übernachtungen im Hotel am Leuchtturm, Betrag frei wählbar.</p>
+    <div class="bookcard" style="position:static;margin-top:24px">
+      <h3>Betrag wählen</h3>
+      <div class="slots" style="margin-top:12px">{chips}</div>
+      <p class="slots-h" style="margin-top:10px">oder Wunschbetrag eingeben</p>
+      <ul class="ticks" style="margin-top:14px"><li>Online bezahlen mit Karte oder PayPal <span class="demo">Vorschlag</span></li><li>Gutschein sofort als PDF zum Ausdrucken <span class="demo">Vorschlag</span></li><li>Einlösen per Code direkt in der Online-Buchung <span class="demo">Vorschlag</span></li></ul>
+      <a class="btn btn-navy" href="#" data-toast="Im Entwurf endet der Ablauf hier." style="width:100%;margin-top:16px">Gutschein kaufen</a>
+    </div>
+    <div class="note" data-n="5"><b>Gutscheine, die sich selbst verkaufen:</b> Heute bestellt man über ein Formular mit Rechnungsanschrift und Sicherheitscode und zahlt per Überweisung nach Rechnung – der Gutschein kommt erst nach Zahlungseingang. Mit Online-Zahlung und sofortigem PDF verkauft die Seite auch am 23. Dezember noch, ohne Arbeit an der Rezeption.</div>
+  </div>
+  <div class="pic2"><img class="tall" src="img/ptdz-5.jpg" alt="Panorama-Terrassen-Doppelzimmer" data-zoom><img src="img/fruehstueck-3.jpg" alt="Frühstück" loading="lazy" data-zoom><img src="img/lobby-2.jpg" alt="Lobby mit Kamin" loading="lazy" data-zoom></div>
+</div></section>
+"""
+    page("gutscheine.html", "Gutscheine – Hotel am Leuchtturm Warnemünde", "Wertgutscheine für Übernachtungen im Hotel am Leuchtturm in Warnemünde – Betrag frei wählbar.", body)
+
+def vouchers_en():
+    chips = "".join(f'<a class="slot" href="#" data-toast="In this concept: choose an amount, pay online, receive the voucher instantly as a PDF.">€{v}</a>' for v in (100, 200, 300, 500))
+    body = f"""
+<div class="wrap crumbs"><a href="index.html">Home</a> › Gift vouchers</div>
+<section style="padding-top:22px"><div class="wrap split" style="align-items:start">
+  <div>
+    <div class="eyebrow">A gift of days by the sea</div>
+    <h1 class="caps" style="font-size:clamp(32px,4.4vw,52px)">Gift vouchers</h1><div class="rule"></div>
+    <p class="lead">Give days by the sea: gift vouchers for stays at Hotel am Leuchtturm, for any amount you choose.</p>
+    <div class="bookcard" style="position:static;margin-top:24px">
+      <h3>Choose an amount</h3>
+      <div class="slots" style="margin-top:12px">{chips}</div>
+      <p class="slots-h" style="margin-top:10px">or enter any amount</p>
+      <ul class="ticks" style="margin-top:14px"><li>Pay online by card or PayPal <span class="demo">Proposal</span></li><li>Instant PDF voucher to print <span class="demo">Proposal</span></li><li>Redeem with a code in the online booking <span class="demo">Proposal</span></li></ul>
+      <a class="btn btn-navy" href="#" data-toast="In this concept the flow ends here." style="width:100%;margin-top:16px">Buy a voucher</a>
+    </div>
+  </div>
+  <div class="pic2"><img class="tall" src="../img/ptdz-5.jpg" alt="Panorama Terrace Double Room" data-zoom><img src="../img/fruehstueck-3.jpg" alt="Breakfast" loading="lazy" data-zoom><img src="../img/lobby-2.jpg" alt="Lobby with fireplace" loading="lazy" data-zoom></div>
+</div></section>
+"""
+    page("en/vouchers.html", "Gift vouchers – Hotel am Leuchtturm, Warnemünde", "Gift vouchers for stays at Hotel am Leuchtturm in Warnemünde – any amount.", body, lang="en")
+
+def build_extra():
+    hanse_sail(); hanse_sail_en(); cruise(); cruise_en(); vouchers(); vouchers_en()
+
+
 if __name__ == "__main__":
     home(); rooms_index(); [room_page(r) for r in ROOMS]; apartments(); offers(); history(); location(); gallery(); booking(); imprint(); tech(); hosting()
     build_en()
+    build_extra()
     print("ok")
