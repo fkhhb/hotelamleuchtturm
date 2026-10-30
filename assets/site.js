@@ -82,7 +82,9 @@ function quote(r, a, b, adults, rate="flex", extras=[]){
 function bookUrl(p){
   const q = new URLSearchParams();
   ["arrival","departure","adults","room","rate","extras","offer","step"].forEach(k => { if (p[k] !== undefined && p[k] !== "" && !(Array.isArray(p[k]) && !p[k].length)) q.set(k, Array.isArray(p[k]) ? p[k].join(",") : p[k]); });
-  return ROOT + "buchen.html" + (q.toString() ? "?" + q : "");
+  // Live (Vercel, cleanUrls): /buchen?… · lokal (Datei/Testserver): buchen.html?…
+  const page = /\.(mndst\.co|vercel\.app)$/.test(location.hostname) ? "buchen" : "buchen.html";
+  return ROOT + page + (q.toString() ? "?" + q : "");
 }
 
 /* ---------- Kleinteile ---------- */

@@ -6,6 +6,7 @@ assets/site.css, assets/site.js und img/ werden nicht erzeugt, sondern direkt be
 import json, os, html
 OUT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))  # Repo-Wurzel = Website
 REAL = "https://www.hotel-am-leuchtturm.de"
+LIVE = "https://hotelamleuchtturm.mndst.co"  # Adresse dieses Entwurfs
 TODAY = "2026-10-30"
 TEL, TEL_HREF, MAIL = "0381 5 43 70", "+4938154370", "info@hotel-am-leuchtturm.de"
 e = html.escape
@@ -70,6 +71,15 @@ def page(path, title, desc, body, active="", schema=None, mbar=True, mbar_href=N
 <title>{e(title)}</title>
 <meta name="description" content="{e(desc)}">
 <meta name="robots" content="noindex, nofollow">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="de_DE">
+<meta property="og:site_name" content="Hotel am Leuchtturm – Konzeptentwurf">
+<meta property="og:title" content="{e(title)}">
+<meta property="og:description" content="{e(desc)}">
+<meta property="og:image" content="{LIVE}/img/hero-vom-leuchtturm-960.jpg">
+<meta property="og:image:width" content="960"><meta property="og:image:height" content="640">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#00284b">
 <link rel="icon" href="{R}img/favicon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Marcellus&family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet">
