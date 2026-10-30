@@ -361,6 +361,11 @@ function initBooking(){
   render(); write();
 }
 
+// Dünen-Video: bei „Bewegung reduzieren“ nur das Standbild zeigen
+document.querySelectorAll(".strip-vid").forEach(v => {
+  if (window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches) { v.removeAttribute("autoplay"); v.pause(); }
+});
+
 initChrome(); initSearch(); initSlots(); initBookcard(); initBooking();
 window.HAL = {ROOMS, quote, nextFree, season, minStay};
 })();

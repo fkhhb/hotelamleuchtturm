@@ -126,6 +126,14 @@ ul.ticks li::before{content:"";position:absolute;left:2px;top:9px;width:14px;hei
 .strip{position:relative;color:#fff}
 .strip img{width:100%;height:clamp(260px,26vw,360px);object-fit:cover}
 .strip .ov{position:absolute;inset:0;display:flex;align-items:center;background:linear-gradient(90deg,rgba(0,40,75,.8),rgba(0,40,75,.15))}
+.strip-vid{display:block;width:100%;height:clamp(340px,38vw,560px);object-fit:cover;object-position:50% 40%;background:var(--navy)}
+.strip-video{background:var(--navy)}
+.vcap{background:var(--navy);padding:30px 0 34px}
+.vcap .wrap{display:flex;align-items:center;justify-content:space-between;gap:28px}
+.vcap .eyebrow{color:var(--aqua)}
+.vcap h2{margin:4px 0 6px}
+.vcap p{max-width:640px;margin:0}
+.vcap .btn{flex:none}
 .strip h2{color:#fff}
 .strip p{max-width:520px;font-size:18px;opacity:.95}
 
@@ -237,6 +245,8 @@ footer a{color:#cfdbe5}
   .hero-copy{position:static;display:block;background:var(--navy);padding:26px 0 76px}
   .hero p{text-shadow:none}
   .hero-credit{position:static;display:block;background:var(--navy);padding:6px 24px 0;text-shadow:none;color:rgba(255,255,255,.6)}
+  .strip-vid{height:auto;aspect-ratio:4/3;object-position:50% 50%}
+  .vcap .wrap{flex-direction:column;align-items:flex-start;gap:18px}
 }
 /* sticky mobile booking + toast */
 .mbar{display:none}

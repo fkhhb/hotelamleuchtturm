@@ -231,6 +231,9 @@ def home():
   </div>
 </div></section>
 
+<div class="strip strip-video"><video class="strip-vid" autoplay muted loop playsinline preload="metadata" poster="img/duenen-zoom-poster.jpg" aria-label="Langsame Kamerafahrt durch die Dünen auf das Hotel am Leuchtturm zu"><source media="(max-width:640px)" src="img/duenen-zoom-960.mp4" type="video/mp4"><source src="img/duenen-zoom.mp4" type="video/mp4"></video>
+  <div class="vcap"><div class="wrap"><div><div class="eyebrow">Hinter den Dünen</div><h2 class="caps">Vom Strand direkt ins Hotel</h2><p>Zwischen Ihrem Zimmer und der Ostsee liegen nur die Promenade und ein paar Schritte durch die Dünen.</p></div><a class="btn btn-white" href="buchen.html">Verfügbarkeit prüfen</a></div></div></div>
+
 <section class="alt" id="zimmer"><div class="wrap">
   <div class="center"><div class="eyebrow">Zimmer &amp; Preise</div><h2 class="caps">Ihr Zimmer am Meer</h2><div class="rule"></div>
   <p class="lead">Klassisch-modern im Boutiquestil, mit Betten in Komforthöhe und Bädern in Marmoroptik. Wählen Sie Ihren Blick – und buchen Sie direkt den nächsten freien Termin.</p>
@@ -827,6 +830,9 @@ def home_en():
     <div><b>24 hours</b><span>reception at your service</span></div>
   </div>
 </div></section>
+
+<div class="strip strip-video"><video class="strip-vid" autoplay muted loop playsinline preload="metadata" poster="../img/duenen-zoom-poster.jpg" aria-label="Slow camera move through the dunes towards Hotel am Leuchtturm"><source media="(max-width:640px)" src="../img/duenen-zoom-960.mp4" type="video/mp4"><source src="../img/duenen-zoom.mp4" type="video/mp4"></video>
+  <div class="vcap"><div class="wrap"><div><div class="eyebrow">Behind the dunes</div><h2 class="caps">From the beach straight to the hotel</h2><p>Only the promenade and a few steps through the dunes lie between your room and the Baltic Sea.</p></div><a class="btn btn-white" href="book.html">Check availability</a></div></div></div>
 
 <section class="alt" id="rooms"><div class="wrap">
   <div class="center"><div class="eyebrow">Rooms &amp; rates</div><h2 class="caps">Your room by the sea</h2><div class="rule"></div>
