@@ -214,8 +214,8 @@ def home():
   <span class="hero-credit">Blick vom Leuchtturm auf Hotel, Promenade und Strand</span>
   <div class="hero-copy"><div class="wrap">
     <div class="eyebrow">Der Blick vom Leuchtturm auf unser Haus · seit 1850</div>
-    <h1 class="caps">Direkt am Leuchtturm</h1>
-    <p>Inhabergeführtes Boutique-Hotel mit 30 Zimmern, Frühstückslounge mit Blick auf die Promenade und Lobby mit Kamin – nur wenige Schritte vom feinen weißen Sand der Ostsee.</p>
+    <h1 class="caps">Direkt am Meer</h1>
+    <p>Inhabergeführtes Boutique-Hotel an der Strandpromenade, direkt gegenüber dem Leuchtturm: 30 Zimmer, Frühstückslounge mit Blick auf die Promenade und Lobby mit Kamin – nur wenige Schritte vom feinen weißen Sand der Ostsee.</p>
   </div></div>
 </section>
 <div class="search"><div class="wrap">
@@ -860,8 +860,8 @@ def home_en():
   <span class="hero-credit">The view from the lighthouse: hotel, promenade and beach</span>
   <div class="hero-copy"><div class="wrap">
     <div class="eyebrow">The view from the lighthouse onto our hotel · since 1850</div>
-    <h1 class="caps">Right by the lighthouse</h1>
-    <p>Owner-run boutique hotel with 30 rooms, a breakfast lounge overlooking the promenade and a lobby with fireplace – just steps from the fine white sand of the Baltic Sea.</p>
+    <h1 class="caps">Right by the sea</h1>
+    <p>Owner-run boutique hotel on the beach promenade, right opposite the lighthouse: 30 rooms, a breakfast lounge overlooking the promenade and a lobby with fireplace – just steps from the fine white sand of the Baltic Sea.</p>
   </div></div>
 </section>
 <div class="search"><div class="wrap">
