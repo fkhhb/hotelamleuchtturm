@@ -58,6 +58,8 @@ assets/site.css               styles (hotel colours: navy #00284b, sea #376f8d, 
 assets/site.js                room data, prices, booking logic, URL state, DE/EN texts
 img/                          photos © Hotel am Leuchtturm, logo, favicon
 quelle/build_site.py          page generator (not deployed)
+quelle/tests/                 site test and live checks (not deployed)
+CLAUDE.md                     handover notes for the next Claude session (not deployed)
 vercel.json                   clean URLs + X-Robots-Tag: noindex
 robots.txt                    Disallow: / (concept must not be indexed)
 ```
@@ -72,11 +74,17 @@ python3 quelle/build_site.py
 
 Styles and behaviour are edited directly in `assets/site.css` and `assets/site.js`. To swap a photo, replace the file in `img/` with the same name.
 
-Preview locally:
+Preview and test locally:
 
 ```bash
-python3 -m http.server 8000
+python3 -m http.server 8772
 ```
+
+```bash
+node quelle/tests/test_site.js
+```
+
+`test_site.js` checks every page on desktop and phone (errors, broken images, horizontal scroll, internal links) plus the English booking flow and the language switch. Two scripts re-check the real hotel: `quelle/tests/dirs21_check.js` (room types and prices in DIRS21) and `quelle/tests/live_booking_check.js` (does booking open after declining cookies). Session handover notes for Claude are in `CLAUDE.md`.
 
 ## Deployment
 
